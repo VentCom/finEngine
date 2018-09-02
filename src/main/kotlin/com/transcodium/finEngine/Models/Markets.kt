@@ -1,3 +1,4 @@
+/**
 # Copyright 2018 - Transcodium Ltd.
 #  All rights reserved. This program and the accompanying materials
 #  are made available under the terms of the  Apache License v2.0 which accompanies this distribution.
@@ -6,20 +7,23 @@
 #  http://www.opensource.org/licenses/apache2.0.php
 #
 #  You are required to redistribute this code under the same licenses.
-# 
+#
 #  @author Razak Zakari <razak@transcodium.com>
 #  https://transcodium.com
+ **/
 
-#Instruction : https://github.com/JetBrains/Exposed/wiki/DataBase-and-DataSource
+package com.transcodium.finEngine.Models
 
-database = {
+import com.transcodium.finEngine.DB
 
-    type     =  "postgresql"
-    driver   =  "org.postgresql.Driver"
-    host     =  "localhost"
-    port     =  5432
-    user     =  "root"
-    password =  "secret"
-    database =  "coinstats"
+class Markets {
 
-}
+    companion object {
+
+        val db by lazy {
+            DB()
+        }
+
+
+    }//end companion object
+}//end class

@@ -51,6 +51,10 @@ dependencies {
     compile "io.vertx:vertx-core:$vertx_version"
     compile "io.vertx:vertx-lang-kotlin:$vertx_version"
     compile 'org.jetbrains.exposed:exposed:0.10.4'
+    compile "io.vertx:vertx-config-hocon:$vertx_version"
+    compile "io.vertx:vertx-lang-kotlin-coroutines:$vertx_version"
+    compile "org.postgresql:postgresql:42.2.2"
+
 }
 
 compileKotlin {
