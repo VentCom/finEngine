@@ -12,20 +12,24 @@
 #  https://transcodium.com
  **/
 
-package com.transcodium.finEngine.Drivers
+package com.transcodium.finEngine
 
 import io.vertx.kotlin.coroutines.CoroutineVerticle
 
-class Binance : CoroutineVerticle() {
+class DataPipeVerticle : CoroutineVerticle() {
+
 
     /**
-     * start
+     * start Verticle
      */
-    override suspend fun start(){
+    override suspend fun start() {
+        super.start()
 
-        //lets get config
+        print("data piper verticle started")
 
-    }//end
+        //process data piper data to db
+        DataPiper.processSavedToDB()
+    }
 
 
 }

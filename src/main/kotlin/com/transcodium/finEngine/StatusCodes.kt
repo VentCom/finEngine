@@ -12,18 +12,18 @@
 #  https://transcodium.com
  **/
 
-package com.transcodium.finEngine.Models
+package com.transcodium.mothership.core
 
-import com.transcodium.finEngine.DB
-
-class Markets {
+class StatusCodes {
 
     companion object {
 
-        val db by lazy {
-            DB()
-        }
+        const val SUCCESS     = 200
+        const val FAILED      = 300
+        const val NEUTRAL     = 400
+        const val SYSTEM_BUSY = 500
+        const val DB_ERROR = 600
 
 
-    }//end companion object
-}//end class
+    }
+}

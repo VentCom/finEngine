@@ -14,15 +14,13 @@
 
 package com.transcodium.finEngine
 
+
 import com.transcodium.mothership.core.ConfigManager
 import io.vertx.core.DeploymentOptions
-import io.vertx.core.VertxOptions
-import io.vertx.core.json.JsonObject
+import io.vertx.core.Vertx
 import io.vertx.core.logging.LoggerFactory
-import io.vertx.kotlin.core.json.get
 import io.vertx.kotlin.coroutines.CoroutineVerticle
-import io.vertx.kotlin.coroutines.awaitEvent
-import kotlinx.coroutines.experimental.launch
+
 
 class AppMain : CoroutineVerticle(){
 
@@ -42,7 +40,11 @@ class AppMain : CoroutineVerticle(){
          */
          fun startMainVerticle() {
 
-             ConfigManager.retrive()
+            //vertx
+            val vertx = Vertx.vertx()
+
+
+            ConfigManager.retrive(vertx)
                         .getConfig { res ->
 
                if(res.failed()) {
@@ -51,7 +53,6 @@ class AppMain : CoroutineVerticle(){
                }
 
                 val config = res.result()
-
 
                 val appConfig = config.getJsonObject("app")
 
@@ -63,10 +64,46 @@ class AppMain : CoroutineVerticle(){
                          .setConfig(config)
                          .setWorker(true)
                          .setWorkerPoolSize(workerPoolSize)
-                         .setInstances(appInstances)
+                         //.setInstances(appInstances)
                          .setHa(true)
 
-                            println(config)
+                 val dataPiperOpts = deployOpts
+
+                  dataPiperOpts.instances = appInstances
+
+                 //start pipeliner verticler
+                 vertx.deployVerticle(DataPipeVerticle::class.java,dataPiperOpts)
+
+
+                 val driversArray = config.getJsonArray("fin_engine_drivers")
+
+
+                 //loop data and start verticles
+                 driversArray.forEach { driverName ->
+
+                     driverName as String
+
+                    //lets get the driver info
+                    val driverInfo = config.getJsonObject(driverName)
+
+                     val verticle = driverInfo.getString("verticle") ?: driverName
+
+                     val verticleClass = "${this.javaClass.`package`.name}.drivers.$verticle"
+
+                     print(verticleClass)
+
+                     /*/lets start the verticle
+                     vertx.deployVerticle(verticleClass,deployOpts,{ res->
+
+                         if(res.failed()){
+                             logger.fatal("Starting Driver verticle $verticleClass failed",res.cause())
+                             System.exit(1)
+                         }else{
+                            logger.info("$driverName Started successfully")
+                         }
+                     })
+                     */
+                 } //end loop
 
              }//end retrieve config
 

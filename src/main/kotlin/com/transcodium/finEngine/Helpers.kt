@@ -14,11 +14,14 @@
 
 package com.transcodium.finEngine
 
+import com.transcodium.mothership.core.StatusCodes
+import io.vertx.core.AsyncResult
+import io.vertx.core.Handler
 import io.vertx.core.Vertx
 import io.vertx.core.json.JsonObject
+import io.vertx.core.logging.Logger
 import io.vertx.core.logging.LoggerFactory
 import io.vertx.kotlin.core.json.get
-import org.jetbrains.exposed.sql.Database
 import java.io.File
 import kotlin.reflect.KClass
 
@@ -27,32 +30,6 @@ val logger by lazy {
     LoggerFactory.getLogger("Helpers.kt")
 }
 
-/**
- * DBConnect
- */
-fun DB(): Database{
-
-    val dbConfig = getConfig<JsonObject?>("database",null)
-
-    if(dbConfig== null){
-        logger.fatal("Database config is missing")
-        System.exit(1)
-    }
-
-    val dbType = dbConfig!!.getString("type")
-    val host = dbConfig.getString("host")
-    val port = dbConfig.getInteger("port")
-    val database = dbConfig.getInteger("database")
-
-    val dbUrl = "jdbc:$dbType://$host:$port/$database"
-
-    return Database.connect(
-            url = dbUrl,
-            driver =  dbConfig.getString("driver"),
-            user = dbConfig.getString("user"),
-            password =  dbConfig.getString("password")
-    )
-}//end
 
 /**
  * getConfig
@@ -94,4 +71,99 @@ fun basePath(callerClass: KClass<*>? = null): File {
     // print(appDir)
 
     return File(appDir)
+}//end
+
+
+/**
+ * log fatal and exit process
+ */
+fun Logger.fatalExit(str: String, errInfo: Any? = null){
+
+    var message = str
+
+    var throwable: Throwable? = null
+
+    var exception: Exception? = null
+
+    if(errInfo is AsyncResult<*>){
+
+        throwable = errInfo.cause()
+
+        exception = (throwable as Exception)
+
+        message += "\r\n Cause: ${throwable.cause}"
+
+        println(message)
+
+    }else if(errInfo is Throwable){
+
+        throwable = errInfo
+
+    }
+
+    this.fatal(message,throwable)
+
+    if(errInfo is Exception){
+        throw errInfo
+    }
+
+    throw Exception(throwable)
+}
+
+
+/**
+ * containKeys
+ * check a jsonObject if a set of keys exists, if the non existent key will be
+ * sent back
+ */
+
+fun JsonObject.requiredItems(keys: List<String>): String? {
+
+    val jsonData = this
+
+    keys.forEach {
+        key ->
+
+        if(!jsonData.containsKey(key) || jsonData.getValue(key).toString() == ""){
+            return key
+        }
+    }
+
+    return null
+}//end fun
+
+
+
+/**
+ *handleDBError
+ **/
+fun handleDBError(
+        asyncCallback: AsyncResult<*>,
+        h: Handler<Status>? = null){
+
+    if(asyncCallback.failed()){
+
+        if(h != null){
+            h.handle(Status.error(
+                    message = "system_busy",
+                    code = StatusCodes.DB_ERROR
+            ))
+        }
+
+        logger.fatalExit("Mongo DB Error Occured",asyncCallback.cause())
+    }//end if
+}//end fun
+
+/**
+ * vertxInst
+ **/
+fun vertxInst(): Vertx{
+    return Vertx.currentContext().owner()
+}
+
+/**
+ *  makeDir
+ **/
+suspend fun makeDir(dirPath: String){
+
 }//end
