@@ -2,37 +2,34 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="140eb769-9af3-48af-88cb-cd20566f7301" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.gradle/4.4/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.4/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.4/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.4/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_piper/367070125056277-947001254.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_piper/367070999157657-1934661879.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_piper/367071987228418-46332780.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_piper/367073117557743--1502380118.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_piper/367074013839754-1337501440.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_piper/367074997062449--653085326.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_piper/367076009577278-6813885.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_piper/367077014134510--757778773.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_piper/367078018171559-931140251.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_piper/367079084521541--903387558.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_piper/367080017520017--2144948434.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_piper/367081045000510-1375218010.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_piper/367082024484741--1868094283.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_piper/367083156833154--68505811.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_piper/367084031697511--1601583156.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_piper/367085092889871-1109186804.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_piper/367086039402310--405886039.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_piper/368509194235293--241414812.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_piper/368511112955242-455027119.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_piper/368511345810808-651306359.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_piper/368513248669724-1370836639.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_piper/368513612635434--1741860243.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_piper/368514078028475--283882725.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_piper/368515182952245-205241877.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_piper/368516068217557--866517587.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_piper/368517059239843-1340509632.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_piper/453235366393451--1829700174.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_piper/453237101507043--1544629873.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_piper/453237368953724-1346030954.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_piper/453239116131720--246156561.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_piper/453239611191350--2033909453.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_piper/453240067635574-194488706.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_piper/453241323934462--2088055425.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_piper/453419428451696-594967944.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_piper/453421172125957--829216707.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_piper/453421451971160--1507763648.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_piper/453422342208440-1502783656.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_piper/453423249255434-766313051.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_piper/453424190178092--1369799541.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_piper/453425418598025--1380828885.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_piper/453426765343343--661770755.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_piper/453427292417310-145718881.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_piper/453428370652994-563967520.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_piper/453429515100649--1721773759.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_piper/453430314914267--1725512971.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_piper/453431441536803--333375708.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_piper/453432372079822--139338689.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/AppMain.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/AppMain.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/DataPipeVerticle.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/DataPipeVerticle.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/DataPiper.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/DataPiper.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/Helpers.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/Helpers.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/drivers/Binance.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/drivers/Binance.kt" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -72,8 +69,8 @@
       <file leaf-file-name="AppMain.kt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/AppMain.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="267">
-              <caret line="74" column="19" selection-start-line="74" selection-start-column="19" selection-end-line="74" selection-end-column="19" />
+            <state relative-caret-position="-560">
+              <caret line="69" column="17" selection-start-line="69" selection-start-column="17" selection-end-line="69" selection-end-column="17" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
                 <element signature="e#500#750#0" expanded="true" />
@@ -85,80 +82,53 @@
       <file leaf-file-name="Binance.kt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/drivers/Binance.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="122">
-              <caret line="165" column="12" selection-start-line="165" selection-start-column="12" selection-end-line="165" selection-end-column="12" />
+            <state relative-caret-position="68">
+              <caret line="188" column="46" lean-forward="true" selection-start-line="188" selection-start-column="46" selection-end-line="188" selection-end-column="46" />
               <folding>
-                <element signature="e#507#1227#0" expanded="true" />
+                <element signature="e#507#1054#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DataPipeVerticle.kt" pinned="false" current-in-tab="false">
+      <file leaf-file-name="DataPipeVerticle.kt" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/DataPipeVerticle.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="227">
-              <caret line="27" selection-start-line="27" selection-end-line="27" />
+            <state relative-caret-position="137">
+              <caret line="30" column="9" selection-start-line="30" selection-start-column="9" selection-end-line="30" selection-end-column="9" />
+              <folding>
+                <element signature="e#499#641#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DataPiper.kt" pinned="false" current-in-tab="true">
+      <file leaf-file-name="DataPiper.kt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/DataPiper.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-635">
-              <caret line="90" column="12" lean-forward="true" selection-start-line="90" selection-start-column="12" selection-end-line="90" selection-end-column="12" />
+            <state relative-caret-position="274">
+              <caret line="103" column="29" selection-start-line="103" selection-start-column="29" selection-end-line="103" selection-end-column="29" />
               <folding>
-                <element signature="e#499#964#0" expanded="true" />
+                <element signature="e#500#827#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="BulkOperation.kt" pinned="false" current-in-tab="false">
-        <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.vertx/vertx-mongo-client/3.5.3/fa296af84cb18c018d8b380256ba28a56579489b/vertx-mongo-client-3.5.3-sources.jar!/io/vertx/kotlin/ext/mongo/BulkOperation.kt">
+      <file leaf-file-name="StatItem.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/StatItem.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="342">
-              <caret line="19" column="4" selection-start-line="19" selection-start-column="4" selection-end-line="19" selection-end-column="4" />
+            <state relative-caret-position="-54">
+              <caret line="18" column="22" selection-start-line="18" selection-start-column="22" selection-end-line="18" selection-end-column="22" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Helpers.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/Helpers.kt">
+      <file leaf-file-name="BulkOperation.java" pinned="false" current-in-tab="false">
+        <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.vertx/vertx-mongo-client/3.5.3/fa296af84cb18c018d8b380256ba28a56579489b/vertx-mongo-client-3.5.3-sources.jar!/io/vertx/ext/mongo/BulkOperation.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="275">
-              <caret line="191" column="1" selection-start-line="191" selection-start-column="1" selection-end-line="191" selection-end-column="1" />
-              <folding>
-                <element signature="e#499#840#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="HttpClient.java" pinned="false" current-in-tab="false">
-        <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.vertx/vertx-core/3.5.3/3fb6998111f65daca83ba640e646cc666deb7150/vertx-core-3.5.3-sources.jar!/io/vertx/core/http/HttpClient.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1833">
-              <caret line="1130" column="13" selection-start-line="1130" selection-start-column="13" selection-end-line="1130" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SocketAddress.java" pinned="false" current-in-tab="false">
-        <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.vertx/vertx-core/3.5.3/3fb6998111f65daca83ba640e646cc666deb7150/vertx-core-3.5.3-sources.jar!/io/vertx/core/net/SocketAddress.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="201">
-              <caret line="45" column="42" selection-start-line="45" selection-start-column="23" selection-end-line="45" selection-end-column="42" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="NetClient.java" pinned="false" current-in-tab="false">
-        <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.vertx/vertx-core/3.5.3/3fb6998111f65daca83ba640e646cc666deb7150/vertx-core-3.5.3-sources.jar!/io/vertx/core/net/NetClient.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="818">
-              <caret line="69" column="12" selection-start-line="69" selection-start-column="12" selection-end-line="69" selection-end-column="12" />
+            <state relative-caret-position="448">
+              <caret line="131" selection-start-line="120" selection-end-line="131" />
             </state>
           </provider>
         </entry>
@@ -166,8 +136,38 @@
       <file leaf-file-name="build.gradle" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/build.gradle">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="28">
-              <caret line="38" selection-start-line="38" selection-end-line="38" />
+            <state relative-caret-position="210">
+              <caret line="53" column="52" selection-start-line="53" selection-start-column="52" selection-end-line="53" selection-end-column="52" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DB.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/DB.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="237">
+              <caret line="46" selection-start-line="46" selection-end-line="46" />
+              <folding>
+                <element signature="e#499#606#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="URLEncoder.java" pinned="false" current-in-tab="false">
+        <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/src.zip!/java/net/URLEncoder.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-476">
+              <caret line="164" column="25" selection-start-line="164" selection-start-column="25" selection-end-line="164" selection-end-column="25" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Base64.java" pinned="false" current-in-tab="false">
+        <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mongodb/bson/3.6.1/38892e4dcbe1eefd9805b37c46dd734ab28c9df0/bson-3.6.1-sources.jar!/org/bson/internal/Base64.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="214">
+              <caret line="98" column="25" selection-start-line="98" selection-start-column="25" selection-end-line="98" selection-end-column="25" />
             </state>
           </provider>
         </entry>
@@ -444,9 +444,9 @@
     </option>
     <option name="modificationStamps">
       <map>
-        <entry key="$PROJECT_DIR$" value="6143597869000" />
+        <entry key="$PROJECT_DIR$" value="6143718641000" />
         <entry key="$PROJECT_DIR$/.gradle" value="0" />
-        <entry key="$PROJECT_DIR$/build.gradle" value="1632082621" />
+        <entry key="$PROJECT_DIR$/build.gradle" value="3061203446" />
         <entry key="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" value="2083459160" />
         <entry key="$PROJECT_DIR$/settings.gradle" value="4233269722" />
       </map>
@@ -687,17 +687,17 @@
         <option value="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/StatusCodes.kt" />
         <option value="$PROJECT_DIR$/config/database.conf" />
         <option value="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/Market.kt" />
-        <option value="$PROJECT_DIR$/build.gradle" />
         <option value="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/Helpers.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/AppMain.kt" />
+        <option value="$PROJECT_DIR$/build.gradle" />
         <option value="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/drivers/Binance.kt" />
-        <option value="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/DataPipeVerticle.kt" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/StatItem.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/DataPiper.kt" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/DataPipeVerticle.kt" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="x" value="-12" />
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="y" value="23" />
     <option name="width" value="1280" />
     <option name="height" value="726" />
@@ -748,15 +748,6 @@
               <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="kotlin" type="462c0819:PsiDirectoryNode" />
               <item name="finEngine" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="finEngine" type="b2602c69:ProjectViewProjectNode" />
-              <item name="finEngine" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="kotlin" type="462c0819:PsiDirectoryNode" />
-              <item name="finEngine" type="462c0819:PsiDirectoryNode" />
-              <item name="drivers" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -856,32 +847,32 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-12" y="23" width="1280" height="726" extended-state="0" />
+    <frame x="4" y="23" width="1280" height="726" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Messages" order="7" weight="0.32838285" />
-      <window_info anchor="right" id="Palette&#9;" order="3" />
+      <window_info anchor="bottom" id="Messages" order="11" weight="0.32838285" />
+      <window_info anchor="right" id="Palette&#9;" order="8" />
       <window_info id="Image Layers" order="2" />
-      <window_info anchor="right" id="Capture Analysis" order="3" />
-      <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
-      <window_info anchor="right" id="Maven Projects" order="3" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.330033" />
-      <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Terminal" order="7" />
-      <window_info id="Capture Tool" order="2" />
-      <window_info id="Designer" order="2" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25767368" />
-      <window_info anchor="bottom" id="Build" order="7" weight="0.32840723" />
+      <window_info anchor="right" id="Capture Analysis" order="4" />
+      <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
+      <window_info anchor="right" id="Maven Projects" order="7" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.35313532" />
+      <window_info anchor="bottom" id="Version Control" order="9" weight="0.32838285" />
+      <window_info anchor="bottom" id="Terminal" order="7" weight="0.32838285" />
+      <window_info id="Capture Tool" order="6" />
+      <window_info id="Designer" order="3" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25767368" />
+      <window_info anchor="bottom" id="Build" order="10" weight="0.32838285" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="right" id="Gradle" order="3" weight="0.32956383" />
+      <window_info anchor="right" id="Gradle" order="5" weight="0.32956383" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info id="UI Designer" order="2" />
-      <window_info anchor="right" id="Theme Preview" order="3" />
+      <window_info id="UI Designer" order="4" />
+      <window_info anchor="right" id="Theme Preview" order="6" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
-      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info id="Favorites" order="5" side_tool="true" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
@@ -1061,16 +1052,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/DB.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="546">
-          <caret line="46" selection-start-line="46" selection-end-line="46" />
-          <folding>
-            <element signature="e#499#606#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/StatusCodes.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="191">
@@ -1095,13 +1076,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="28">
-          <caret line="38" selection-start-line="38" selection-end-line="38" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.vertx/vertx-core/3.5.3/3fb6998111f65daca83ba640e646cc666deb7150/vertx-core-3.5.3-sources.jar!/io/vertx/core/net/SocketAddress.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="201">
@@ -1123,16 +1097,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/Helpers.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="275">
-          <caret line="191" column="1" selection-start-line="191" selection-start-column="1" selection-end-line="191" selection-end-column="1" />
-          <folding>
-            <element signature="e#499#840#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.vertx/vertx-mongo-client/3.5.3/fa296af84cb18c018d8b380256ba28a56579489b/vertx-mongo-client-3.5.3-sources.jar!/io/vertx/kotlin/ext/mongo/BulkOperation.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="342">
@@ -1140,10 +1104,55 @@
         </state>
       </provider>
     </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.vertx/vertx-core/3.5.3/3fb6998111f65daca83ba640e646cc666deb7150/vertx-core-3.5.3-sources.jar!/io/vertx/core/file/FileSystem.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1930">
+          <caret line="438" column="13" selection-start-line="438" selection-start-column="13" selection-end-line="438" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/Helpers.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="256">
+          <caret line="190" column="5" selection-start-line="190" selection-start-column="5" selection-end-line="190" selection-end-column="5" />
+          <folding>
+            <element signature="e#499#840#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.2.41/dc11619be6c45157a142d3753017544896da8e69/kotlin-stdlib-1.2.41-sources.jar!/kotlin/Any.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="627">
+          <caret line="47" column="20" selection-start-line="47" selection-start-column="20" selection-end-line="47" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mongodb/bson/3.6.1/38892e4dcbe1eefd9805b37c46dd734ab28c9df0/bson-3.6.1-sources.jar!/org/bson/internal/Base64.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="214">
+          <caret line="98" column="25" selection-start-line="98" selection-start-column="25" selection-end-line="98" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/src.zip!/java/net/URLEncoder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-476">
+          <caret line="164" column="25" selection-start-line="164" selection-start-column="25" selection-end-line="164" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="53" column="52" selection-start-line="53" selection-start-column="52" selection-end-line="53" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/AppMain.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="267">
-          <caret line="74" column="19" selection-start-line="74" selection-start-column="19" selection-end-line="74" selection-end-column="19" />
+        <state relative-caret-position="-560">
+          <caret line="69" column="17" selection-start-line="69" selection-start-column="17" selection-end-line="69" selection-end-column="17" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
             <element signature="e#500#750#0" expanded="true" />
@@ -1151,29 +1160,76 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/drivers/Binance.kt">
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.vertx/vertx-core/3.5.3/3fb6998111f65daca83ba640e646cc666deb7150/vertx-core-3.5.3-sources.jar!/io/vertx/core/json/JsonArray.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3260">
+          <caret line="338" column="28" selection-start-line="338" selection-start-column="28" selection-end-line="338" selection-end-column="28" />
+          <folding>
+            <element signature="e#1476#1477#0" expanded="true" />
+            <element signature="e#1500#1501#0" expanded="true" />
+            <element signature="e#15122#15123#0" expanded="true" />
+            <element signature="e#15164#15165#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/src.zip!/java/net/URLDecoder.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="122">
-          <caret line="165" column="12" selection-start-line="165" selection-start-column="12" selection-end-line="165" selection-end-column="12" />
+          <caret line="131" column="25" selection-start-line="131" selection-start-column="25" selection-end-line="131" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/DB.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="237">
+          <caret line="46" selection-start-line="46" selection-end-line="46" />
           <folding>
-            <element signature="e#507#1227#0" expanded="true" />
+            <element signature="e#499#606#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.vertx/vertx-mongo-client/3.5.3/fa296af84cb18c018d8b380256ba28a56579489b/vertx-mongo-client-3.5.3-sources.jar!/io/vertx/ext/mongo/BulkOperation.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="448">
+          <caret line="131" selection-start-line="120" selection-end-line="131" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/drivers/Binance.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="188" column="46" lean-forward="true" selection-start-line="188" selection-start-column="46" selection-end-line="188" selection-end-column="46" />
+          <folding>
+            <element signature="e#507#1054#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/StatItem.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-54">
+          <caret line="18" column="22" selection-start-line="18" selection-start-column="22" selection-end-line="18" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/DataPiper.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="274">
+          <caret line="103" column="29" selection-start-line="103" selection-start-column="29" selection-end-line="103" selection-end-column="29" />
+          <folding>
+            <element signature="e#500#827#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/DataPipeVerticle.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="227">
-          <caret line="27" selection-start-line="27" selection-end-line="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/DataPiper.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-635">
-          <caret line="90" column="12" lean-forward="true" selection-start-line="90" selection-start-column="12" selection-end-line="90" selection-end-column="12" />
+        <state relative-caret-position="137">
+          <caret line="30" column="9" selection-start-line="30" selection-start-column="9" selection-end-line="30" selection-end-column="9" />
           <folding>
-            <element signature="e#499#964#0" expanded="true" />
+            <element signature="e#499#641#0" expanded="true" />
           </folding>
         </state>
       </provider>

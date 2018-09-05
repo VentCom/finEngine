@@ -16,23 +16,23 @@ package com.transcodium.finEngine.drivers
 
 import com.transcodium.finEngine.DataPiper
 import com.transcodium.finEngine.Market
+import com.transcodium.finEngine.StatItem
+import com.transcodium.finEngine.StatItem.Companion.PRICE_LOW
 import com.transcodium.finEngine.fatalExit
-import com.transcodium.finEngine.mongoDate
 import io.vertx.core.Vertx
-import io.vertx.core.http.HttpClient
 import io.vertx.core.http.HttpClientOptions
 import io.vertx.core.http.RequestOptions
 import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 import io.vertx.core.logging.LoggerFactory
-import io.vertx.kotlin.core.json.Json
+import io.vertx.kotlin.core.json.JsonArray
 import io.vertx.kotlin.core.json.json
 import io.vertx.kotlin.core.json.obj
 import io.vertx.kotlin.core.net.NetClientOptions
 import io.vertx.kotlin.coroutines.CoroutineVerticle
 import io.vertx.kotlin.coroutines.dispatcher
 import kotlinx.coroutines.experimental.launch
-import java.time.Instant
+
 
 class Binance : CoroutineVerticle() {
 
@@ -157,7 +157,6 @@ class Binance : CoroutineVerticle() {
 
             dataObj as JsonObject
 
-            //println(dataObj)
 
             val eventTime = dataObj.getLong("E")
 
@@ -184,23 +183,25 @@ class Binance : CoroutineVerticle() {
 
             processedData.add(json{
                 obj(
-                        "t"  to eventTime,
-                        "s" to pair,
-                        "mid" to driverId,
-                        "p" to obj(
-                                "c" to priceChange,
-                                "cp" to priceChangePercent,
-                                "l"  to priceLow,
-                                "h"  to priceHigh,
-                                "o"  to priceOpen,
-                                "cl" to priceClose
+                        StatItem.TIME  to eventTime,
+                        StatItem.PAIR to pair,
+                        StatItem.MARKET_ID to driverId,
+                        StatItem.PRICE to obj(
+
+                                StatItem.PRICE_CHANGE to priceChange,
+                                StatItem.PRICE_CHANGE_PERCENT to priceChangePercent,
+                                StatItem.PRICE_LOW  to priceLow,
+                                StatItem.PRICE_HIGH  to priceHigh,
+                                StatItem.PRICE_OPEN  to priceOpen,
+                                StatItem.PRICE_CLOSE to priceClose
                         ),
 
-                        "v" to volume,
-                        "vq" to volumeQoute
+                        StatItem.VOLUME       to volume,
+                        StatItem.VOLUME_QUOTE to volumeQoute
                 )
             })
         }//end loop
+
 
         DataPiper.save(processedData)
     }//end fun

@@ -14,16 +14,20 @@
 
 package com.transcodium.finEngine
 
+
 import io.vertx.core.buffer.Buffer
 import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 import io.vertx.core.logging.LoggerFactory
 import io.vertx.ext.mongo.BulkOperation
-import io.vertx.kotlin.core.json.JsonObject
-import io.vertx.kotlin.coroutines.awaitBlocking
+import io.vertx.kotlin.core.json.json
+import io.vertx.kotlin.core.json.obj
 import io.vertx.kotlin.coroutines.awaitEvent
-import io.vertx.kotlin.ext.mongo.BulkOperation
+import io.vertx.kotlin.coroutines.dispatcher
 import kotlinx.coroutines.experimental.delay
+import kotlinx.coroutines.experimental.launch
+import java.net.URLDecoder
+import java.net.URLEncoder
 
 class DataPiper {
 
@@ -52,13 +56,17 @@ class DataPiper {
         /**
          * save - Save the data to a file
          */
-        fun save(data: Any){
+        fun save(data: JsonArray){
 
             val filename = "${System.nanoTime()}-${data.hashCode()}.json"
 
             val filePath = "$dataDir/$filename"
 
-            val dataBuff = Buffer.buffer(data.toString())
+            val charset =  Charsets.UTF_8.name()
+
+            val dataStr = URLEncoder.encode(data.encode(),charset)
+
+            val dataBuff = Buffer.buffer(dataStr,charset)
 
             fs.writeFile(filePath,dataBuff,{res->
                 if (res.failed()){
@@ -72,7 +80,7 @@ class DataPiper {
         /**
          * processSaveToDB
          */
-        suspend fun processSavedToDB(infinite: Boolean = false){
+        suspend fun processSavedToDB(){
 
            val scannedFiles: MutableList<String>? = awaitEvent { h ->
 
@@ -90,61 +98,82 @@ class DataPiper {
                return
            }
 
-
             //scan through files and insert them
-            scannedFiles.forEach { filePath->
+            for (filePath in scannedFiles) {
 
-                fs.readFile(filePath,{ res->
+                   delay(500L)
 
-                    if(res.failed()){
-                        logger.fatal(
-                            "Failed to read contents of $filePath : ${res.cause().message}",
-                                res.cause()
-                        )
-                    }
+                    fs.readFile(filePath, { res ->
 
-                    val result: Buffer? = res.result()
-
-                    val dataJsonArray = JsonArray(String(result!!.bytes))
-
-                    /**
-                     * convert objects to bulkOperations for onetime insert
-                     */
-                    val mongoBulkData = dataJsonArray.map{ data ->
-                        BulkOperation.createInsert(data as JsonObject)
-                    }.toMutableList()
-
-
-                    //insert into db
-                    mClient.bulkWrite("asset_stats",mongoBulkData,{
-                        res->
-                        if(res.failed()){
-                            logger.fatal(
-                                    "Failed to insert Bulk Data: ${res.cause().message}",
-                                    res.cause()
-                            )
-                            return@bulkWrite
+                        if (res.failed()) {
+                            return@readFile
                         }
 
+                        val result: Buffer? = res.result() ?: return@readFile
 
-                        //delete the file
-                        fs.deleteBlocking(filePath)
 
-                    })//end mongo bulk write
+                        val dataStr = String(result!!.bytes)
 
-                })//end read file
+                        val charset = Charsets.UTF_8.name()
 
-                //delay(2000L)
+                        //url decode str
+                        val urlDecodedStr = try {
+                            URLDecoder.decode(dataStr, charset)
+                        } catch (e: Exception) {
+                            return@readFile
+                        }
 
-            }//end loop
+                        val dataJsonArray = JsonArray(urlDecodedStr)
 
-            ///if infinite
-            if(infinite) {
-                //restart processing again
-                processSavedToDB(infinite)
-            }//end if
+                        /**
+                         * convert objects to bulkOperations for onetime insert
+                         */
+                        val mongoBulkData = dataJsonArray.map { data ->
 
+                            data as JsonObject
+
+                            val cond = json {
+                                obj(
+                                        StatItem.PAIR to data.getString(StatItem.PAIR),
+                                        StatItem.MARKET_ID to data.getString(StatItem.MARKET_ID)
+                                )
+                            }
+
+                            //println(cond)
+
+                            BulkOperation.createReplace(cond, data, true)
+                        }.toMutableList()
+
+                        launch(vertxInst().dispatcher()) {
+
+                            delay(500L)
+
+                            //insert into db
+                            mClient.bulkWrite("asset_stats", mongoBulkData, { res ->
+                                if (res.failed()) {
+                                    logger.fatal(
+                                            "Failed to insert Bulk Data: ${res.cause().message}",
+                                            res.cause()
+                                    )
+                                    return@bulkWrite
+                                }
+
+
+                                //delete the file
+                                fs.delete(filePath, {})
+
+                            })//end mongo bulk write
+                        }
+
+                    })//end read file
+
+                    //delay(2000L)
+
+                }//end loop
         }//end fun
 
-    }
-}
+    }//end companion obj
+
+
+
+}//end fun

@@ -15,8 +15,12 @@
 package com.transcodium.finEngine
 
 import io.vertx.kotlin.coroutines.CoroutineVerticle
+import io.vertx.kotlin.coroutines.dispatcher
+import kotlinx.coroutines.experimental.launch
 
 class DataPipeVerticle : CoroutineVerticle() {
+
+    val scanPeriod = 6000L
 
     /**
      * start Verticle
@@ -24,11 +28,18 @@ class DataPipeVerticle : CoroutineVerticle() {
     override suspend fun start() {
         super.start()
 
-        print("data piper verticle started")
+       // print("data piper verticle started")
 
-        //process data piper data to db
-        DataPiper.processSavedToDB()
-    }
+        //run this periodically
+
+        vertx.setPeriodic(scanPeriod,{
+           launch(vertx.dispatcher()) {
+               //process data piper data to db
+               DataPiper.processSavedToDB()
+           }
+        })
+
+    }//end fun
 
 
 }
