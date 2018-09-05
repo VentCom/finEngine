@@ -17,6 +17,7 @@ package com.transcodium.finEngine.drivers
 import com.transcodium.finEngine.DataPiper
 import com.transcodium.finEngine.Market
 import com.transcodium.finEngine.fatalExit
+import com.transcodium.finEngine.mongoDate
 import io.vertx.core.Vertx
 import io.vertx.core.http.HttpClient
 import io.vertx.core.http.HttpClientOptions
@@ -31,6 +32,7 @@ import io.vertx.kotlin.core.net.NetClientOptions
 import io.vertx.kotlin.coroutines.CoroutineVerticle
 import io.vertx.kotlin.coroutines.dispatcher
 import kotlinx.coroutines.experimental.launch
+import java.time.Instant
 
 class Binance : CoroutineVerticle() {
 
@@ -155,33 +157,36 @@ class Binance : CoroutineVerticle() {
 
             dataObj as JsonObject
 
+            //println(dataObj)
+
             val eventTime = dataObj.getLong("E")
 
-            val dateTime = DateTime(eventTime)
+            //val dateTimeInstant = Instant.ofEpochMilli(eventTime)
 
-             val pair =    dataObj.getString("s").toLowerCase()
+            val pair =    dataObj.getString("s").toLowerCase()
 
-            val priceChange = dataObj.getDouble("p")
+            val priceChange = dataObj.getString("p").toDoubleOrNull()
 
-            val priceChangePercent = dataObj.getFloat("P")
+            val priceChangePercent = dataObj.getString("P").toFloat()
 
-            val priceHigh = dataObj.getDouble("h")
+            val priceHigh = dataObj.getString("h").toDoubleOrNull()
 
-            val priceLow = dataObj.getDouble("l")
+            val priceLow = dataObj.getString("l").toDoubleOrNull()
 
-            val priceOpen = dataObj.getDouble("o")
+            val priceOpen = dataObj.getString("o").toDoubleOrNull()
 
-            val priceClose =  dataObj.getDouble("c")
+            val priceClose =  dataObj.getString("c").toDoubleOrNull()
 
-            val volume = dataObj.getInteger("v")
+            val volume =  dataObj.getString("v").toDoubleOrNull()
 
-            val volumeQoute = dataObj.getInteger("q")
+            val volumeQoute = dataObj.getString("q").toDoubleOrNull()
+
 
             processedData.add(json{
                 obj(
-                        "t" to
+                        "t"  to eventTime,
                         "s" to pair,
-                        "d" to driverId,
+                        "mid" to driverId,
                         "p" to obj(
                                 "c" to priceChange,
                                 "cp" to priceChangePercent,
@@ -195,8 +200,9 @@ class Binance : CoroutineVerticle() {
                         "vq" to volumeQoute
                 )
             })
-        }
+        }//end loop
 
-    }//end
+        DataPiper.save(processedData)
+    }//end fun
 
 }//enc class

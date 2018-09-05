@@ -22,7 +22,10 @@ import io.vertx.core.json.JsonObject
 import io.vertx.core.logging.Logger
 import io.vertx.core.logging.LoggerFactory
 import io.vertx.kotlin.core.json.get
+import io.vertx.kotlin.core.json.json
+import io.vertx.kotlin.core.json.obj
 import java.io.File
+import java.time.Instant
 import kotlin.reflect.KClass
 
 
@@ -167,3 +170,23 @@ fun vertxInst(): Vertx{
 suspend fun makeDir(dirPath: String){
 
 }//end
+
+
+/**
+ *currentDate
+ **/
+fun currentDateTime(): Instant {
+    return Instant.now()
+}//end
+
+/**
+ *mongoDate
+ **/
+fun mongoDate(customDate: Instant? = null): JsonObject{
+
+    val date = customDate ?: currentDateTime()
+
+    return json{
+        obj("\$date" to date.toString())
+    }
+}

@@ -18,7 +18,6 @@ import io.vertx.kotlin.coroutines.CoroutineVerticle
 
 class DataPipeVerticle : CoroutineVerticle() {
 
-
     /**
      * start Verticle
      */

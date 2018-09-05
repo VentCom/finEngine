@@ -67,12 +67,12 @@ class AppMain : CoroutineVerticle(){
                          //.setInstances(appInstances)
                          .setHa(true)
 
-                 val dataPiperOpts = deployOpts
+                 //val dataPiperOpts = deployOpts
 
-                  dataPiperOpts.instances = appInstances
+                 // dataPiperOpts.instances = appInstances
 
                  //start pipeliner verticler
-                 vertx.deployVerticle(DataPipeVerticle::class.java,dataPiperOpts)
+                 //vertx.deployVerticle(DataPipeVerticle::class.java,dataPiperOpts)
 
 
                  val driversArray = config.getJsonArray("fin_engine_drivers")
@@ -90,9 +90,9 @@ class AppMain : CoroutineVerticle(){
 
                      val verticleClass = "${this.javaClass.`package`.name}.drivers.$verticle"
 
-                     print(verticleClass)
+                     //print(verticleClass)
 
-                     /*/lets start the verticle
+                     //lets start the verticle
                      vertx.deployVerticle(verticleClass,deployOpts,{ res->
 
                          if(res.failed()){
@@ -102,7 +102,7 @@ class AppMain : CoroutineVerticle(){
                             logger.info("$driverName Started successfully")
                          }
                      })
-                     */
+
                  } //end loop
 
              }//end retrieve config

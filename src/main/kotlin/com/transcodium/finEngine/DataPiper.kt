@@ -14,10 +14,16 @@
 
 package com.transcodium.finEngine
 
+import io.vertx.core.buffer.Buffer
+import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 import io.vertx.core.logging.LoggerFactory
-import io.vertx.kotlin.core.json.Json
+import io.vertx.ext.mongo.BulkOperation
+import io.vertx.kotlin.core.json.JsonObject
+import io.vertx.kotlin.coroutines.awaitBlocking
 import io.vertx.kotlin.coroutines.awaitEvent
+import io.vertx.kotlin.ext.mongo.BulkOperation
+import kotlinx.coroutines.experimental.delay
 
 class DataPiper {
 
@@ -39,16 +45,22 @@ class DataPiper {
             LoggerFactory.getLogger(this::class.java)
         }
 
+        val mClient by lazy {
+            DB.client()
+        }
+
         /**
          * save - Save the data to a file
          */
-        fun save(data: JsonObject){
+        fun save(data: Any){
 
             val filename = "${System.nanoTime()}-${data.hashCode()}.json"
 
             val filePath = "$dataDir/$filename"
 
-            fs.writeFile(filePath,data.toBuffer(),{res->
+            val dataBuff = Buffer.buffer(data.toString())
+
+            fs.writeFile(filePath,dataBuff,{res->
                 if (res.failed()){
                     logger.fatal("DataPiper file write failed: ${res.cause().message}",res.cause())
                     return@writeFile
@@ -60,7 +72,7 @@ class DataPiper {
         /**
          * processSaveToDB
          */
-        suspend fun processSavedToDB(){
+        suspend fun processSavedToDB(infinite: Boolean = false){
 
            val scannedFiles: MutableList<String>? = awaitEvent { h ->
 
@@ -78,25 +90,59 @@ class DataPiper {
                return
            }
 
-            val processedFiles : JsonObject = JsonObject()
 
             //scan through files and insert them
             scannedFiles.forEach { filePath->
 
-                val proessFile = awaitEvent<JsonObject>{h->
-                    fs.readFile(filePath,{ res->
+                fs.readFile(filePath,{ res->
 
+                    if(res.failed()){
+                        logger.fatal(
+                            "Failed to read contents of $filePath : ${res.cause().message}",
+                                res.cause()
+                        )
+                    }
+
+                    val result: Buffer? = res.result()
+
+                    val dataJsonArray = JsonArray(String(result!!.bytes))
+
+                    /**
+                     * convert objects to bulkOperations for onetime insert
+                     */
+                    val mongoBulkData = dataJsonArray.map{ data ->
+                        BulkOperation.createInsert(data as JsonObject)
+                    }.toMutableList()
+
+
+                    //insert into db
+                    mClient.bulkWrite("asset_stats",mongoBulkData,{
+                        res->
                         if(res.failed()){
                             logger.fatal(
-                                "Failed to read contents of $filePath : ${res.cause().message}",
+                                    "Failed to insert Bulk Data: ${res.cause().message}",
                                     res.cause()
                             )
+                            return@bulkWrite
                         }
 
-                    })
-                }
-            }//end
 
+                        //delete the file
+                        fs.deleteBlocking(filePath)
+
+                    })//end mongo bulk write
+
+                })//end read file
+
+                //delay(2000L)
+
+            }//end loop
+
+            ///if infinite
+            if(infinite) {
+                //restart processing again
+                processSavedToDB(infinite)
+            }//end if
 
         }//end fun
 
