@@ -67,15 +67,24 @@ class AppMain : CoroutineVerticle(){
                          .setInstances(1)
                          .setHa(true)
 
-                //ßval  = deployOpts
+                val defaultDeployOpts = DeploymentOptions()
+                                .setConfig(config)
+                                .setWorker(true)
+                                .setWorkerPoolSize(workerPoolSize)
+                                .setInstances(appInstances)
+                                .setHa(true)
 
                  //dataPiperOpts.instances = appInstances
 
                  //start pipeliner verticler
-                 vertx.deployVerticle(DataPipeVerticle::class.java,deployOpts)
+                 vertx.deployVerticle(DataPipeVerticle::class.java,defaultDeployOpts)
+
+                 //start data access bridge
+                 vertx.deployVerticle(DataAccessBridgeVerticle::class.java,defaultDeployOpts)
 
 
-                 val driversArray = config.getJsonArray("fin_engine_drivers")
+
+                            val driversArray = config.getJsonArray("fin_engine_drivers")
 
 
                  //loop data and start verticles

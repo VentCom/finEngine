@@ -14,10 +14,12 @@
 
 package com.transcodium.finEngine
 
+import io.vertx.core.buffer.Buffer
+import io.vertx.core.http.HttpServerOptions
+import io.vertx.core.http.HttpServerRequest
+import io.vertx.core.http.ServerWebSocket
+import io.vertx.core.http.WebSocket
 import io.vertx.core.logging.LoggerFactory
-import io.vertx.ext.bridge.BridgeOptions
-import io.vertx.ext.bridge.PermittedOptions
-import io.vertx.ext.eventbus.bridge.tcp.TcpEventBusBridge
 import io.vertx.kotlin.coroutines.CoroutineVerticle
 
 class DataAccessBridgeVerticle: CoroutineVerticle() {
@@ -26,31 +28,106 @@ class DataAccessBridgeVerticle: CoroutineVerticle() {
         LoggerFactory.getLogger(this::class.java)
     }
 
+    val appConfig by lazy {
+        config.getJsonObject("app")
+    }
+
     override suspend fun start() {
         super.start()
 
-        val bridge = TcpEventBusBridge.create(
-                vertx,
-         BridgeOptions()
-                .addInboundPermitted( PermittedOptions().setAddress("in"))
-                .addOutboundPermitted( PermittedOptions().setAddress("out")))
+        startWebsocketServer()
+    }//end fun
 
-        bridge.listen(9000){res->
+    /**
+     * start websocket server
+     */
+    fun startWebsocketServer(){
 
-            if(res.failed()){
-                logger.fatalExit(
-                        "Data Access Bridge failed ${res.cause().message}",
-                        res.cause()
-                )
+        val port = appConfig.getInteger("data_access_port",9000)
+        val address = appConfig.getString("data_access_address","localhost")
 
-                bridge.close()
+        val serverOpts = HttpServerOptions()
+                .setReusePort(true)
 
-                return@listen
-            }
 
-            
-        }
+        val sockServer = vertx.createHttpServer(serverOpts)
+                .websocketHandler { req->  webSocketServerHandler(req)}
+                .listen(port,address){  res->
+
+                    if(res.failed()){
+                        logger.fatal("Failed to start websocket server $address:$port")
+                        return@listen
+                    }
+                }
 
     }//end fun
 
-}
+    /**
+     * websocket server handler
+     */
+    fun webSocketServerHandler(ws: ServerWebSocket){
+
+        val dataAccessAPIKey = appConfig.getString("data_access_api_key","")
+
+        //lets read data
+        ws.handler { h->
+
+           val data = try{
+
+               h.toJsonObject()
+
+           }catch(e: Exception){
+
+               ws.writeTextMessage(Status.error("A valid json data is required")
+                       .toJsonString()
+               )
+
+               //ws.close()
+
+               return@handler
+           }
+
+             if(!dataAccessAPIKey.isEmpty()) {
+
+                 val apiKey = data.getString("api_key", "")
+
+                 if (apiKey.isEmpty()) {
+                     ws.writeTextMessage(Status.error("API key required").toJsonString())
+                     //ws.reject()
+                     return@handler
+                 }
+
+                 if(dataAccessAPIKey != apiKey){
+                     ws.writeTextMessage(Status.error("Invalid API Key").toJsonString())
+                     //ws.reject()
+                     return@handler
+                 }//end if
+
+             }//end if server api key was set
+
+            //pairs
+            val symbols = data.getJsonArray("symbols",null)
+
+            if(symbols == null || symbols.isEmpty){
+                ws.writeTextMessage(Status.error("at least one symbol is required").toJsonString())
+                return@handler
+            }
+
+            //validate symbols
+            for(symbol in symbols){
+
+                symbol as String
+
+                if(!symbol.matches("^([a-zA-Z0-9]+\\.[a-zA-Z0-9]+)$".toRegex())){
+                    ws.writeTextMessage(Status.error("Invalid symbol format $symbol").toJsonString())
+                    return@handler
+                }
+            }//end loop
+
+            
+        }//end handler
+    }//end
+
+
+
+}//end class
