@@ -121,6 +121,7 @@ class Livecoin  : CoroutineVerticle()  {
 
         val processedData = JsonArray()
 
+
         dataArray.forEach { dataObj ->
 
             dataObj as JsonObject
@@ -130,6 +131,7 @@ class Livecoin  : CoroutineVerticle()  {
             val pair =    dataObj.getString("symbol").toLowerCase()
                                         .replace("/",".")
 
+
             val priceHigh = dataObj.getDouble("high",0.0)
 
             val priceLow = dataObj.getDouble("low",0.0)
@@ -137,6 +139,7 @@ class Livecoin  : CoroutineVerticle()  {
             val priceClose =  dataObj.getDouble("last",0.0)
 
             val volume =  dataObj.getDouble("volume",0.0)
+
 
             processedData.add(json{
                 obj(
@@ -153,7 +156,6 @@ class Livecoin  : CoroutineVerticle()  {
                 )
             })
         }//end loop
-
 
         DataPiper.save(processedData)
 

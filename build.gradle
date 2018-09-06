@@ -51,6 +51,9 @@ dependencies {
     compile "io.vertx:vertx-lang-kotlin-coroutines:$vertx_version"
     compile "io.vertx:vertx-mongo-client:$vertx_version"
     compile "io.vertx:vertx-web-client:$vertx_version"
+    compile "io.vertx:vertx-tcp-eventbus-bridge:$vertx_version"
+
+
 
 }
 
