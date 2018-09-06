@@ -77,14 +77,6 @@ class Binance : CoroutineVerticle() {
 
 
     /**
-     * getLatestPrices
-     */
-    fun fetchLatestPrices(){
-
-
-    }//end
-
-    /**
      * fetchMarketDataStream
      */
     suspend fun fetchMarketDataStream(vertx: Vertx){
@@ -110,7 +102,7 @@ class Binance : CoroutineVerticle() {
 
         val dataPiper = DataPiper
 
-        val soc = client.websocket(socOptions,{res->
+        val soc = client.websocket(socOptions){res->
 
             res.exceptionHandler {e->
                 logger.fatal(e.message,e)
@@ -135,13 +127,13 @@ class Binance : CoroutineVerticle() {
 
               print("connection closed, waiting for ${wsReconnectWaitTime / 1000}  secs to reconnect")
 
-              vertx.setTimer(wsReconnectWaitTime,{
+              vertx.setTimer(wsReconnectWaitTime){
                   launch(vertx.dispatcher()) {
                       fetchMarketDataStream(vertx)
                   }
-              })
+              }//end timer
             }
-        })
+        }//end websocket
 
 
     }//end fun
@@ -164,6 +156,12 @@ class Binance : CoroutineVerticle() {
 
             val pair =    dataObj.getString("s").toLowerCase()
 
+            val firstAsset = pair.substring(0,2)
+
+            val secondAsset = pair.substring(2,pair.length)
+
+            val symbol = "$firstAsset.$secondAsset"
+
             val priceChange = dataObj.getString("p").toDoubleOrNull()
 
             val priceChangePercent = dataObj.getString("P").toFloat()
@@ -184,7 +182,7 @@ class Binance : CoroutineVerticle() {
             processedData.add(json{
                 obj(
                         StatItem.TIME  to eventTime,
-                        StatItem.PAIR to pair,
+                        StatItem.PAIR to symbol,
                         StatItem.MARKET_ID to driverId,
                         StatItem.PRICE to obj(
 

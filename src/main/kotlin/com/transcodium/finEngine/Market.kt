@@ -50,7 +50,7 @@ class Market {
             }
 
             //if here, then the data is null
-            val insertNew = new(json{obj("name" to name)})
+            val insertNew = new(json{obj("name" to name.toLowerCase())})
 
             if(insertNew.isError()){
                 return insertNew
@@ -71,11 +71,11 @@ class Market {
         suspend fun fetchByName(name: String): Status{
 
             val cond = json{
-                obj("name" to name)
+                obj("name" to name.toLowerCase())
             }
 
             return awaitEvent { h->
-                db.findOne("markets",cond,null,{res->
+                db.findOne("markets",cond,null){res->
 
                     if(res.failed()){
                         handleDBError(res,h)
@@ -85,7 +85,7 @@ class Market {
                     val result: JsonObject? = res.result()
 
                     h.handle(Status.success(data = result))
-                })//end
+                }//end
             }//end await
         }
 
@@ -96,7 +96,7 @@ class Market {
 
             return awaitEvent {h->
 
-                db.insert("markets",data,{res->
+                db.insert("markets",data){res->
 
                     if(res.failed()){
                         handleDBError(res,h)
@@ -104,7 +104,7 @@ class Market {
                     }
 
                     h.handle(Status.success(data = res.result()))
-                }) //end insert
+                } //end insert
             }
         }//end fun
 

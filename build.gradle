@@ -51,7 +51,6 @@ dependencies {
     compile "io.vertx:vertx-lang-kotlin-coroutines:$vertx_version"
     compile "io.vertx:vertx-mongo-client:$vertx_version"
     compile "io.vertx:vertx-web-client:$vertx_version"
-    implementation 'com.google.code.gson:gson:2.8.5'
 
 }
 

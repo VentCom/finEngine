@@ -58,7 +58,7 @@ class DataPiper {
          */
         fun save(data: JsonArray){
 
-            val filename = "${System.nanoTime()}-${data.hashCode()}.json"
+            val filename = "${System.nanoTime()}.json"
 
             val filePath = "$dataDir/$filename"
 
@@ -68,12 +68,12 @@ class DataPiper {
 
             val dataBuff = Buffer.buffer(dataStr,charset)
 
-            fs.writeFile(filePath,dataBuff,{res->
+            fs.writeFile(filePath,dataBuff){res->
                 if (res.failed()){
                     logger.fatal("DataPiper file write failed: ${res.cause().message}",res.cause())
                     return@writeFile
                 }
-            })
+            }//end write
         }//end fun
 
 
@@ -84,14 +84,14 @@ class DataPiper {
 
            val scannedFiles: MutableList<String>? = awaitEvent { h ->
 
-               fs.readDir(dataDir, { res ->
+               fs.readDir(dataDir) { res ->
 
                    if (res.failed()) {
                        logger.fatal("Failed to read saved data in $dataDir")
                    }
 
                    h.handle(res.result())
-               })
+               }
            }//end await
 
            if(scannedFiles == null || scannedFiles.isEmpty()){
@@ -103,7 +103,7 @@ class DataPiper {
 
                    delay(500L)
 
-                    fs.readFile(filePath, { res ->
+                    fs.readFile(filePath) { res ->
 
                         if (res.failed()) {
                             return@readFile
@@ -149,7 +149,7 @@ class DataPiper {
                             delay(500L)
 
                             //insert into db
-                            mClient.bulkWrite("asset_stats", mongoBulkData, { res ->
+                            mClient.bulkWrite("asset_stats", mongoBulkData) { res ->
                                 if (res.failed()) {
                                     logger.fatal(
                                             "Failed to insert Bulk Data: ${res.cause().message}",
@@ -162,10 +162,10 @@ class DataPiper {
                                 //delete the file
                                 fs.delete(filePath, {})
 
-                            })//end mongo bulk write
+                            }//end mongo bulk write
                         }
 
-                    })//end read file
+                    }//end read file
 
                     //delay(2000L)
 

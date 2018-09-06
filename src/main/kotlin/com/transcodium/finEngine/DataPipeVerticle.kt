@@ -32,12 +32,12 @@ class DataPipeVerticle : CoroutineVerticle() {
 
         //run this periodically
 
-        vertx.setPeriodic(scanPeriod,{
+        vertx.setPeriodic(scanPeriod){
            launch(vertx.dispatcher()) {
                //process data piper data to db
                DataPiper.processSavedToDB()
            }
-        })
+        }
 
     }//end fun
 
