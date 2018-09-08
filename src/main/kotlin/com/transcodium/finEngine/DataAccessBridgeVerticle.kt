@@ -14,13 +14,23 @@
 
 package com.transcodium.finEngine
 
-import io.vertx.core.buffer.Buffer
+import com.transcodium.finEngine.DataPiper.Companion.mClient
 import io.vertx.core.http.HttpServerOptions
-import io.vertx.core.http.HttpServerRequest
 import io.vertx.core.http.ServerWebSocket
-import io.vertx.core.http.WebSocket
+import io.vertx.core.json.JsonArray
 import io.vertx.core.logging.LoggerFactory
+import io.vertx.kotlin.core.json.JsonArray
+import io.vertx.kotlin.core.json.array
+import io.vertx.kotlin.core.json.json
+import io.vertx.kotlin.core.json.obj
 import io.vertx.kotlin.coroutines.CoroutineVerticle
+import io.vertx.kotlin.coroutines.awaitEvent
+import io.vertx.kotlin.coroutines.dispatcher
+import kotlinx.coroutines.experimental.launch
+import io.vertx.groovy.ext.mongo.MongoClient_GroovyExtension.runCommand
+import io.vertx.core.json.JsonObject
+import io.vertx.ext.mongo.FindOptions
+
 
 class DataAccessBridgeVerticle: CoroutineVerticle() {
 
@@ -30,6 +40,10 @@ class DataAccessBridgeVerticle: CoroutineVerticle() {
 
     val appConfig by lazy {
         config.getJsonObject("app")
+    }
+
+    val mClient by lazy {
+        DB.client()
     }
 
     override suspend fun start() {
@@ -124,10 +138,57 @@ class DataAccessBridgeVerticle: CoroutineVerticle() {
                 }
             }//end loop
 
-            
+
+
+           val timer = vertx.setPeriodic(3000L) {
+                launch(vertx.dispatcher()) {
+                  ws.writeTextMessage(fecthStatsBySymbols(symbols).toJsonString())
+                }
+            }//end setPeriodic
+
+            ws.closeHandler {
+               vertx.cancelTimer(timer)
+            }
+
         }//end handler
-    }//end
+    }//end fun
 
 
+    /**
+     * fetch stats by symbols
+     */
+    suspend fun fecthStatsBySymbols(
+            symbols: JsonArray
+    ): Status {
+
+        //since aggregate function is broken for vertx mongo
+        //driver, we will use other means to achieve sorting and others
+        //we need
+
+        //now lets  fetch the data
+        val cond = json{
+            obj("s" to obj("\$in" to symbols))
+        }
+
+        val findOpts = FindOptions()
+                .setSort(json { obj("t" to -1, "v" to -1, "p.x" to -1) })
+
+
+
+        return awaitEvent { h->
+
+            mClient.findWithOptions(
+                    "asset_stats",cond, findOpts
+            ){res->
+
+                if(res.failed()){
+                    return@findWithOptions handleDBError(res,h)
+                }
+
+                h.handle(Status.success(data = res.result()))
+            }
+        }
+
+    }//end fun
 
 }//end class

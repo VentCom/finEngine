@@ -53,8 +53,8 @@ dependencies {
     compile "io.vertx:vertx-web-client:$vertx_version"
     compile "io.vertx:vertx-tcp-eventbus-bridge:$vertx_version"
 
-
-
+    //compile 'org.mongodb:mongodb-driver-async:3.8.1'
+    //compile "org.xerial.snappy:snappy-java:1.1.7.2"
 }
 
 compileKotlin {
