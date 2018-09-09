@@ -14,21 +14,16 @@
 
 package com.transcodium.finEngine
 
-import com.transcodium.finEngine.DataPiper.Companion.mClient
 import io.vertx.core.http.HttpServerOptions
 import io.vertx.core.http.ServerWebSocket
 import io.vertx.core.json.JsonArray
 import io.vertx.core.logging.LoggerFactory
-import io.vertx.kotlin.core.json.JsonArray
-import io.vertx.kotlin.core.json.array
 import io.vertx.kotlin.core.json.json
 import io.vertx.kotlin.core.json.obj
 import io.vertx.kotlin.coroutines.CoroutineVerticle
 import io.vertx.kotlin.coroutines.awaitEvent
 import io.vertx.kotlin.coroutines.dispatcher
 import kotlinx.coroutines.experimental.launch
-import io.vertx.groovy.ext.mongo.MongoClient_GroovyExtension.runCommand
-import io.vertx.core.json.JsonObject
 import io.vertx.ext.mongo.FindOptions
 
 
