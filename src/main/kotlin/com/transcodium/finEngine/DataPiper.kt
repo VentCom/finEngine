@@ -15,19 +15,19 @@
 package com.transcodium.finEngine
 
 
+import com.mongodb.client.model.InsertOneModel
 import io.vertx.core.buffer.Buffer
 import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 import io.vertx.core.logging.LoggerFactory
-import io.vertx.ext.mongo.BulkOperation
-import io.vertx.kotlin.core.json.json
-import io.vertx.kotlin.core.json.obj
 import io.vertx.kotlin.coroutines.awaitEvent
 import io.vertx.kotlin.coroutines.dispatcher
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
+import org.bson.Document
 import java.net.URLDecoder
 import java.net.URLEncoder
+import java.time.Instant
 
 class DataPiper {
 
@@ -49,8 +49,8 @@ class DataPiper {
             LoggerFactory.getLogger(this::class.java)
         }
 
-        val mClient by lazy {
-            DB.client()
+        val collection by lazy {
+            MongoDB.client().getCollection("asset_stats")
         }
 
         /**
@@ -132,32 +132,28 @@ class DataPiper {
 
                             data as JsonObject
 
-                            val cond = json {
-                                obj(
-                                        StatItem.PAIR to data.getString(StatItem.PAIR),
-                                        StatItem.MARKET_ID to data.getString(StatItem.MARKET_ID)
-                                )
-                            }
+                            //lets update the time millis to mongo date time
+                            val datetime = data.getLong(StatItem.TIME)
 
-                            //println(cond)
+                            val mongoDate = mongoDate(Instant.ofEpochMilli(datetime))
 
-                            BulkOperation.createReplace(cond, data, true)
+                            data.put(StatItem.TIME,mongoDate)
+
+                            InsertOneModel(Document.parse(data.encode()))
                         }.toMutableList()
+
 
                         launch(vertxInst().dispatcher()) {
 
                             delay(500L)
 
                             //insert into db
-                            mClient.bulkWrite("asset_stats", mongoBulkData) { res ->
-                                if (res.failed()) {
-                                    logger.fatal(
-                                            "Failed to insert Bulk Data: ${res.cause().message}",
-                                            res.cause()
-                                    )
+                            collection.bulkWrite(mongoBulkData){ res, t ->
+
+                                if(t != null){
+                                    logger.fatal("Mongo error:",t)
                                     return@bulkWrite
                                 }
-
 
                                 //delete the file
                                 fs.delete(filePath, {})

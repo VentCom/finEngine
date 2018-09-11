@@ -157,6 +157,26 @@ fun handleDBError(
     }//end if
 }//end fun
 
+
+/**
+ *handleDBError
+ **/
+fun handleDBError(
+        t: Throwable,
+        h: Handler<Status>? = null
+){
+
+
+        if(h != null){
+            h.handle(Status.error(
+                    message = "system_busy",
+                    code = StatusCodes.DB_ERROR
+            ))
+
+        logger.fatal("Mongo DB Error Occured",t)
+    }//end if
+}//end fun
+
 /**
  * vertxInst
  **/

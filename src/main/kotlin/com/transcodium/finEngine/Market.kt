@@ -14,11 +14,14 @@
 
 package com.transcodium.finEngine
 
+import com.mongodb.client.model.Filters.eq
 import io.vertx.core.json.JsonObject
 import io.vertx.core.logging.LoggerFactory
 import io.vertx.kotlin.core.json.json
 import io.vertx.kotlin.core.json.obj
 import io.vertx.kotlin.coroutines.awaitEvent
+import org.bson.Document
+import org.bson.types.ObjectId
 
 class Market {
 
@@ -28,8 +31,8 @@ class Market {
             LoggerFactory.getLogger(this::class.java)
         }
 
-        val db by lazy {
-            DB.client()
+        val collection by lazy {
+            MongoDB.client().getCollection("markets")
         }
 
         /**
@@ -49,8 +52,13 @@ class Market {
                 return infoStatus
             }
 
+            val dataToStore = Document().apply {
+                put("name",name.toLowerCase())
+            }
+
+
             //if here, then the data is null
-            val insertNew = new(json{obj("name" to name.toLowerCase())})
+            val insertNew = new(dataToStore)
 
             if(insertNew.isError()){
                 return insertNew
@@ -58,10 +66,11 @@ class Market {
 
             val insertedId = insertNew.data() as String
 
-            return Status.success( data = json{obj(
-                    "_id" to insertedId,
-                    "name" to name
-            )})
+            val finalData = Document()
+                                        .append("_id",insertNew)
+                                        .append("name", name)
+
+            return Status.success( data = finalData)
 
         }//end if
 
@@ -70,41 +79,37 @@ class Market {
          */
         suspend fun fetchByName(name: String): Status{
 
-            val cond = json{
-                obj("name" to name.toLowerCase())
-            }
+            val cond = eq("name",name.toLowerCase())
 
             return awaitEvent { h->
-                db.findOne("markets",cond,null){res->
+                collection.find(cond).first { result, t ->
 
-                    if(res.failed()){
-                        handleDBError(res,h)
-                        return@findOne
+                    if(t != null){
+                        return@first handleDBError(t,h)
                     }
 
-                    val result: JsonObject? = res.result()
 
                     h.handle(Status.success(data = result))
-                }//end
+
+                }//end find
+
             }//end await
         }
 
         /**
          * new
          */
-        suspend fun new(data: JsonObject): Status{
+        suspend fun new(data: Document): Status{
 
-            return awaitEvent {h->
+            return awaitEvent { h ->
+                MongoDB.insert("markets",data){ id, t->
 
-                db.insert("markets",data){res->
-
-                    if(res.failed()){
-                        handleDBError(res,h)
-                        return@insert
+                    if(t.cause != null){
+                        return@insert handleDBError(t,h)
                     }
 
-                    h.handle(Status.success(data = res.result()))
-                } //end insert
+                    h.handle(Status.success(data = id))
+                }
             }
         }//end fun
 

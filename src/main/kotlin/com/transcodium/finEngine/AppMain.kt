@@ -82,12 +82,10 @@ class AppMain : CoroutineVerticle(){
                  //start data access bridge
                  vertx.deployVerticle(DataAccessBridgeVerticle::class.java,defaultDeployOpts)
 
+                 val driversArray = config.getJsonArray("fin_engine_drivers")
 
 
-                            val driversArray = config.getJsonArray("fin_engine_drivers")
-
-
-                 //loop data and start verticles
+                 /*/loop data and start verticles
                  driversArray.forEach { driverName ->
 
                      driverName as String
@@ -112,7 +110,7 @@ class AppMain : CoroutineVerticle(){
                      }
 
                  } //end loop
-
+                */
              }//end retrieve config
 
         }//en fun

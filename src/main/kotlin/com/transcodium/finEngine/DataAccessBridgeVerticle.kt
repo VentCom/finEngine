@@ -14,17 +14,15 @@
 
 package com.transcodium.finEngine
 
+import com.mongodb.client.model.Aggregates
 import io.vertx.core.http.HttpServerOptions
 import io.vertx.core.http.ServerWebSocket
 import io.vertx.core.json.JsonArray
 import io.vertx.core.logging.LoggerFactory
-import io.vertx.kotlin.core.json.json
-import io.vertx.kotlin.core.json.obj
+import io.vertx.kotlin.core.json.get
 import io.vertx.kotlin.coroutines.CoroutineVerticle
-import io.vertx.kotlin.coroutines.awaitEvent
 import io.vertx.kotlin.coroutines.dispatcher
 import kotlinx.coroutines.experimental.launch
-import io.vertx.ext.mongo.FindOptions
 
 
 class DataAccessBridgeVerticle: CoroutineVerticle() {
@@ -38,7 +36,7 @@ class DataAccessBridgeVerticle: CoroutineVerticle() {
     }
 
     val mClient by lazy {
-        DB.client()
+        MongoDB.client()
     }
 
     override suspend fun start() {
@@ -74,116 +72,83 @@ class DataAccessBridgeVerticle: CoroutineVerticle() {
     /**
      * websocket server handler
      */
-    fun webSocketServerHandler(ws: ServerWebSocket){
+    fun webSocketServerHandler(ws: ServerWebSocket) {
 
-        val dataAccessAPIKey = appConfig.getString("data_access_api_key","")
+        val dataAccessAPIKey = appConfig.getString("data_access_api_key", "")
 
-        //lets read data
-        ws.handler { h->
+        ws.handler { h ->
 
-           val data = try{
+            val data = try {
 
-               h.toJsonObject()
+                h.toJsonObject()
 
-           }catch(e: Exception){
+            } catch (e: Exception) {
 
-               ws.writeTextMessage(Status.error("A valid json data is required")
-                       .toJsonString()
-               )
+                ws.writeTextMessage(Status.error("A valid json data is required")
+                        .toJsonString()
+                )
 
-               //ws.close()
-
-               return@handler
-           }
-
-             if(!dataAccessAPIKey.isEmpty()) {
-
-                 val apiKey = data.getString("api_key", "")
-
-                 if (apiKey.isEmpty()) {
-                     ws.writeTextMessage(Status.error("API key required").toJsonString())
-                     //ws.reject()
-                     return@handler
-                 }
-
-                 if(dataAccessAPIKey != apiKey){
-                     ws.writeTextMessage(Status.error("Invalid API Key").toJsonString())
-                     //ws.reject()
-                     return@handler
-                 }//end if
-
-             }//end if server api key was set
-
-            //pairs
-            val symbols = data.getJsonArray("symbols",null)
-
-            if(symbols == null || symbols.isEmpty){
-                ws.writeTextMessage(Status.error("at least one symbol is required").toJsonString())
                 return@handler
-            }
+            }//end data
 
-            //validate symbols
-            for(symbol in symbols){
 
-                symbol as String
+            if(!dataAccessAPIKey.isEmpty()) {
 
-                if(!symbol.matches("^([a-zA-Z0-9]+\\.[a-zA-Z0-9]+)$".toRegex())){
-                    ws.writeTextMessage(Status.error("Invalid symbol format $symbol").toJsonString())
+                val apiKey = data.getString("api_key", "")
+
+                if (apiKey.isEmpty()) {
+                    ws.writeTextMessage(Status.error("API key required").toJsonString())
+                    //ws.reject()
                     return@handler
                 }
-            }//end loop
+
+                if(dataAccessAPIKey != apiKey){
+                    ws.writeTextMessage(Status.error("Invalid API Key").toJsonString())
+                    //ws.reject()
+                    return@handler
+                }//end if
+
+            }//end if server api key was set
 
 
+            //symbols
+            val symbols = data.getString("symbols")
 
-           val timer = vertx.setPeriodic(3000L) {
-                launch(vertx.dispatcher()) {
-                  ws.writeTextMessage(fecthStatsBySymbols(symbols).toJsonString())
-                }
-            }//end setPeriodic
+            val period = data.getString("period","daily")
 
-            ws.closeHandler {
-               vertx.cancelTimer(timer)
-            }
+            //coroutines
+            launch(vertx.dispatcher()) {
+
+                val statsDataStatus = fetchData(symbols, period)
+
+                println(statsDataStatus)
+            }//end coroutines
 
         }//end handler
+
+
     }//end fun
 
 
     /**
-     * fetch stats by symbols
+     * fetch data
      */
-    suspend fun fecthStatsBySymbols(
-            symbols: JsonArray
-    ): Status {
-
-        //since aggregate function is broken for vertx mongo
-        //driver, we will use other means to achieve sorting and others
-        //we need
-
-        //now lets  fetch the data
-        val cond = json{
-            obj("s" to obj("\$in" to symbols))
-        }
-
-        val findOpts = FindOptions()
-                .setSort(json { obj("t" to -1, "v" to -1, "p.x" to -1) })
+    suspend fun fetchData(
+            symbols: Any? = "all",
+            interval: String? = "daily"
+    ) {
 
 
+        val groupCmd = when(interval){
 
-        return awaitEvent { h->
-
-            mClient.findWithOptions(
-                    "asset_stats",cond, findOpts
-            ){res->
-
-                if(res.failed()){
-                    return@findWithOptions handleDBError(res,h)
-                }
-
-                h.handle(Status.success(data = res.result()))
+            "daily" -> {
+                Aggregates.group("_id",)
             }
+
         }
+
 
     }//end fun
+
 
 }//end class

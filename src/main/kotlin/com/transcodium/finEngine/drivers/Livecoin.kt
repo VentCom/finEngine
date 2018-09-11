@@ -26,6 +26,7 @@ import io.vertx.ext.web.client.WebClientOptions
 import io.vertx.kotlin.core.json.json
 import io.vertx.kotlin.core.json.obj
 import io.vertx.kotlin.coroutines.CoroutineVerticle
+import org.bson.Document
 
 class Livecoin  : CoroutineVerticle()  {
 
@@ -61,9 +62,9 @@ class Livecoin  : CoroutineVerticle()  {
             logger.fatalExit(driverInfoStatus.getMessage())
         }
 
-        println(driverInfoStatus.data())
+        //println(driverInfoStatus.data())
 
-        val driverInfo = driverInfoStatus.data() as JsonObject
+        val driverInfo = driverInfoStatus.data() as Document
 
         driverId = driverInfo.getString("_id")
 
@@ -156,6 +157,8 @@ class Livecoin  : CoroutineVerticle()  {
                 )
             })
         }//end loop
+
+        //println(processedData)
 
         DataPiper.save(processedData)
 
