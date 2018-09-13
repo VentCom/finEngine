@@ -14,18 +14,24 @@
 
 package com.transcodium.finEngine
 
-import com.mongodb.client.model.Aggregates
+import com.mongodb.client.model.*
+import com.mongodb.client.model.Aggregates.*
 import io.vertx.core.http.HttpServerOptions
 import io.vertx.core.http.ServerWebSocket
 import io.vertx.core.json.JsonArray
 import io.vertx.core.logging.LoggerFactory
-import io.vertx.kotlin.core.json.get
 import io.vertx.kotlin.coroutines.CoroutineVerticle
+import io.vertx.kotlin.coroutines.awaitEvent
 import io.vertx.kotlin.coroutines.dispatcher
 import kotlinx.coroutines.experimental.launch
+import org.bson.Document
+import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.ZoneId
+import java.time.ZoneOffset
 
 
-class DataAccessBridgeVerticle: CoroutineVerticle() {
+class DataAccessSocket: CoroutineVerticle() {
 
     val logger by lazy {
         LoggerFactory.getLogger(this::class.java)
@@ -33,10 +39,6 @@ class DataAccessBridgeVerticle: CoroutineVerticle() {
 
     val appConfig by lazy {
         config.getJsonObject("app")
-    }
-
-    val mClient by lazy {
-        MongoDB.client()
     }
 
     override suspend fun start() {
@@ -48,9 +50,11 @@ class DataAccessBridgeVerticle: CoroutineVerticle() {
     /**
      * start websocket server
      */
-    fun startWebsocketServer(){
+    suspend fun startWebsocketServer(){
 
-        val port = appConfig.getInteger("data_access_port",9000)
+       // StatsData.aggregate()
+
+        val port = appConfig.getInteger("data_access_socket_port",9000)
         val address = appConfig.getString("data_access_address","localhost")
 
         val serverOpts = HttpServerOptions()
@@ -68,6 +72,7 @@ class DataAccessBridgeVerticle: CoroutineVerticle() {
                 }
 
     }//end fun
+
 
     /**
      * websocket server handler
@@ -112,14 +117,14 @@ class DataAccessBridgeVerticle: CoroutineVerticle() {
 
 
             //symbols
-            val symbols = data.getString("symbols")
+            val symbols: JsonArray? = data.getJsonArray("symbols",null)
 
-            val period = data.getString("period","daily")
+            val period = data.getString("period","hourly")
 
             //coroutines
             launch(vertx.dispatcher()) {
 
-                val statsDataStatus = fetchData(symbols, period)
+                val statsDataStatus = StatsData.aggregate(null, period)
 
                 println(statsDataStatus)
             }//end coroutines
@@ -129,26 +134,6 @@ class DataAccessBridgeVerticle: CoroutineVerticle() {
 
     }//end fun
 
-
-    /**
-     * fetch data
-     */
-    suspend fun fetchData(
-            symbols: Any? = "all",
-            interval: String? = "daily"
-    ) {
-
-
-        val groupCmd = when(interval){
-
-            "daily" -> {
-                Aggregates.group("_id",)
-            }
-
-        }
-
-
-    }//end fun
 
 
 }//end class

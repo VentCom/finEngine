@@ -24,6 +24,7 @@ import io.vertx.core.logging.LoggerFactory
 import io.vertx.kotlin.core.json.get
 import io.vertx.kotlin.core.json.json
 import io.vertx.kotlin.core.json.obj
+import org.bson.BasicBSONObject
 import java.io.File
 import java.time.Instant
 import kotlin.reflect.KClass
@@ -210,3 +211,4 @@ fun mongoDate(customDate: Instant? = null): JsonObject{
         obj("\$date" to date.toString())
     }
 }
+

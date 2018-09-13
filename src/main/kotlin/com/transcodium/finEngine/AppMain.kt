@@ -71,7 +71,7 @@ class AppMain : CoroutineVerticle(){
                                 .setConfig(config)
                                 .setWorker(true)
                                 .setWorkerPoolSize(workerPoolSize)
-                                .setInstances(appInstances)
+                                .setInstances(1) //appInstances
                                 .setHa(true)
 
                  //dataPiperOpts.instances = appInstances
@@ -79,13 +79,16 @@ class AppMain : CoroutineVerticle(){
                  //start pipeliner verticler
                  vertx.deployVerticle(DataPipeVerticle::class.java,defaultDeployOpts)
 
-                 //start data access bridge
-                 vertx.deployVerticle(DataAccessBridgeVerticle::class.java,defaultDeployOpts)
+                 //start data access websocket bridge
+                 vertx.deployVerticle(DataAccessHttp::class.java,defaultDeployOpts)
+
+                //start data access bridge
+                vertx.deployVerticle(DataAccessSocket::class.java,defaultDeployOpts)
 
                  val driversArray = config.getJsonArray("fin_engine_drivers")
 
 
-                 /*/loop data and start verticles
+                 //loop data and start verticles
                  driversArray.forEach { driverName ->
 
                      driverName as String
@@ -110,7 +113,7 @@ class AppMain : CoroutineVerticle(){
                      }
 
                  } //end loop
-                */
+
              }//end retrieve config
 
         }//en fun
