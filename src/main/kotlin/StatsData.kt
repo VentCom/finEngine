@@ -1,6 +1,7 @@
 import com.mongodb.client.model.Aggregates
 import com.transcodium.finEngine.MongoDB
 import com.transcodium.finEngine.Status
+import io.vertx.core.json.JsonArray
 import io.vertx.kotlin.coroutines.awaitEvent
 import org.bson.Document
 import java.time.LocalDateTime
@@ -34,7 +35,7 @@ class StatsData {
          * fetch data
          */
         suspend fun aggregate(
-                symbols: MutableList<String>? = null,
+                symbols: JsonArray? = null,
                 interval: String? = "hourly"
         ): Status {
 
@@ -46,30 +47,48 @@ class StatsData {
             var dateStart: LocalDateTime
             var dateEnd : LocalDateTime = now
 
+
             when(interval){
+
+                "minute" -> {
+
+                    groupDate = Document()
+                                    .append("year",Document("\$year","\$t"))
+                                    .append("month",Document("\$month","\$t"))
+                                    .append("day",Document("\$dayOfMonth","\$t"))
+                                    .append("hour",Document("\$hour","\$t"))
+                                    .append("minute",Document("\$minute","\$t"))
+
+                    //stats for last 60minutes
+                    dateStart =  now.minusHours(3)
+                }
 
                 "hourly" -> {
                     groupDate = Document()
-                            .append("hour", Document("\$hour","\$t"))
+                                    .append("year",Document("\$year","\$t"))
+                                    .append("month",Document("\$month","\$t"))
+                                    .append("day",Document("\$dayOfMonth","\$t"))
+                                    .append("hour",Document("\$hour","\$t"))
 
-                    //stats for last 12 hours
-                    dateStart =  now.minusHours(12)
+
+                    //stats for last 3 hours
+                    dateStart =  now.minusHours(1)
                 }
 
                 "daily" -> {
                     groupDate = Document()
-                            .append("day", Document("\$dayOfMonth","\$t"))
-                            .append("month", Document("\$month","\$t"))
-                            .append("year", Document("\$year","\$t"))
+                                    .append("year",Document("\$year","\$t"))
+                                    .append("month",Document("\$month","\$t"))
+                                    .append("day",Document("\$dayOfMonth","\$t"))
 
                     // a 7 days interval
-                    dateStart = now.minusDays(7)
+                    dateStart = now.minusDays(3)
                 }
 
                 "mothly" -> {
                     groupDate = Document()
-                            .append("month", Document("\$month","\$t"))
-                            .append("year", Document("\$year","\$t"))
+                                    .append("year",Document("\$year","\$t"))
+                                    .append("month",Document("\$month","\$t"))
 
                     //since last 3 months
                     dateStart = now.minusMonths(3)
@@ -84,47 +103,54 @@ class StatsData {
 
 
             ///match
-            val matchCond = Document("\$match",
-                    Document("t", Document()
+            val matchCond = Document("t", Document()
                             .append("\$gte", queryDateStart)
                             .append("\$lte",queryDateEnd)
                     )
-            )//end match
+
 
             //if symbols was provided
             if(symbols != null){
                 matchCond.append("s", Document("\$in",symbols))
             }
 
-            //sort by first
-            //1. Latest Date Time
-            //2. Volume
-            //3. Price ( closed price p.x)
-            val sortCmd = Aggregates.sort(
-                    Document()
-                            .append("t",1)
-                            .append("v",1)
-                            .append("p.x",1)
+            //match
+            val aggregateMatch = Document("\$match",matchCond)
+
+
+            //pre sort
+            val preSort = Aggregates.sort(
+                                Document()
+                                    //.append("t",-1)
+                                     .append("v",-1)
+                                     .append("p.x",-1)
             )
 
-            val groupCmd = Document("\$group",
-                    Document("_id", groupDate
-                            .append("symbol","\$s")
-                            .append("price","\$p")
-                            .append("volume", Document("\$sum","\$v"))
-                    )
+            //sort by first
+            //1. Latest Date Time
+            val postSort = Aggregates.sort(
+                                    Document()
+                                        .append("_id.date",-1)
+            )
+
+            //id is date + symbol
+            val groupCmd = Document("\$group", Document()
+                                        .append("_id", Document("date",groupDate)
+                                        .append("symbol","\$s"))
+                                        .append("price",Document("\$first","\$p"))
             )
 
             //not aggregates must be in order else you
             // will get undesirable results
             val aggregateCmd = mutableListOf(
-                    matchCond,
-                    sortCmd,
-                    groupCmd
+                    aggregateMatch,
+                    preSort,
+                    groupCmd,
+                    postSort
             )
 
 
-            val resultStatus = awaitEvent<Status> { h->
+            return awaitEvent{ h->
 
                 val resultDocs = mutableListOf<Document>()
 
@@ -139,18 +165,11 @@ class StatsData {
                                 return@into h.handle(Status.error("db_error"))
                             }
 
-                            /**
-                            resultDocs.forEach { i ->
-                            println(i)
-                            }
-                             */
 
                             h.handle(Status.success(data = resultDocs))
                         }
             }//end await
 
-
-            return Status.success(data = resultStatus)
         }//end fun
 
 

@@ -67,7 +67,7 @@ class Market {
             val insertedId = insertNew.data() as String
 
             val finalData = Document()
-                                        .append("_id",insertNew)
+                                        .append("_id",insertedId)
                                         .append("name", name)
 
             return Status.success( data = finalData)
@@ -104,7 +104,7 @@ class Market {
             return awaitEvent { h ->
                 MongoDB.insert("markets",data){ id, t->
 
-                    if(t.cause != null){
+                    if(t?.cause != null){
                         return@insert handleDBError(t,h)
                     }
 

@@ -14,6 +14,7 @@
 
 package com.transcodium.finEngine
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.transcodium.mothership.core.StatusCodes
 import io.vertx.core.json.JsonObject
 import io.vertx.kotlin.core.json.get

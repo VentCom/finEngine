@@ -31,25 +31,29 @@ import io.vertx.kotlin.core.json.obj
 import io.vertx.kotlin.coroutines.CoroutineVerticle
 import org.bson.Document
 
-class Livecoin  : CoroutineVerticle()  {
+class Topbtc : CoroutineVerticle(){
 
     val logger by lazy {
         LoggerFactory.getLogger(this::class.java)
     }
 
 
-    val driverName = "livecoin"
-    lateinit var driverConfig : JsonObject
+    val driverName = "topbtc"
+
+    lateinit var driverConfig: JsonObject
 
     lateinit var driverId: String
 
-    val webClient by lazy{
+    val webClient by lazy {
+
+        val userAgent = "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0"
 
         val webclientOpts = WebClientOptions()
                 .setFollowRedirects(true)
                 .setTrustAll(true)
+                .setUserAgent(userAgent)
 
-        WebClient.create(vertx,webclientOpts)
+        WebClient.create(vertx, webclientOpts)
     }
 
 
@@ -59,9 +63,9 @@ class Livecoin  : CoroutineVerticle()  {
         driverConfig = config.getJsonObject(driverName)
 
         //lets get config
-        val driverInfoStatus = Market.getInfo(driverName,true)
+        val driverInfoStatus = Market.getInfo(driverName, true)
 
-        if(driverInfoStatus.isError()){
+        if (driverInfoStatus.isError()) {
             logger.fatalExit(driverInfoStatus.getMessage())
         }
 
@@ -69,9 +73,11 @@ class Livecoin  : CoroutineVerticle()  {
 
         val driverInfo = driverInfoStatus.data() as Document
 
-        driverId = try{
+       // println(driverInfo)
+
+        driverId = try {
             driverInfo.getString("_id")
-        }catch(e: Exception){
+        } catch (e: Exception) {
             driverInfo.getObjectId("_id").toHexString()
         }
 
@@ -83,13 +89,13 @@ class Livecoin  : CoroutineVerticle()  {
     /**
      * fetchTickerData
      */
-     fun fetchTickerData(){
+    fun fetchTickerData(){
 
         //lets get endpoin
         val endpoint =  driverConfig.getString("data_endpoint","")
 
         if(endpoint.isEmpty()){
-            logger.fatal("$driverName Data endpoint is required in /config/drivers/livecoin.conf")
+            logger.fatal("$driverName Data endpoint is required in /config/drivers/$driverName.conf")
             return
         }
 
@@ -97,9 +103,11 @@ class Livecoin  : CoroutineVerticle()  {
 
 
         val httpRequest = webClient.getAbs(endpoint)
+                .putHeader("Accept","application/json, text/javascript, */*; q=0.01")
+                .putHeader("Content-Type","application/x-www-form-urlencoded")
 
-        //imediate start
-        httpRequest.send{resp-> onHttpResult(resp)}
+        //immediate start
+        httpRequest.send{resp-> onHttpResult(resp) }
 
         //poll request
         vertx.setPeriodic(delay){ httpRequest.send{resp-> onHttpResult(resp) } }//end peroidic
@@ -119,6 +127,7 @@ class Livecoin  : CoroutineVerticle()  {
 
         val dataJson = resp.result().bodyAsJsonArray()
 
+
         processMarketData(dataJson)
     }//end fun
 
@@ -126,7 +135,7 @@ class Livecoin  : CoroutineVerticle()  {
     /**
      * processData
      */
-     fun processMarketData(dataArray: JsonArray){
+    fun processMarketData(dataArray: JsonArray){
 
         if(dataArray.isEmpty){
             return
@@ -141,17 +150,21 @@ class Livecoin  : CoroutineVerticle()  {
 
             val eventTime = System.currentTimeMillis()
 
-            val pair =    dataObj.getString("symbol").toLowerCase()
-                                        .replace("/",".")
+            val coin =    dataObj.getString("coin").toLowerCase()
 
+            val market =  dataObj.getString("market").toLowerCase()
 
-            val priceHigh = dataObj.getDouble("high",0.0)
+            val pair = "$coin.$market"
 
-            val priceLow = dataObj.getDouble("low",0.0)
+            val tickerInfoObj = dataObj.getJsonObject("ticker")
 
-            val priceClose =  dataObj.getDouble("last",0.0)
+            val priceHigh = tickerInfoObj.getString("high","0.0").toDouble()
 
-            val volume =  dataObj.getDouble("volume",0.0)
+            val priceLow = tickerInfoObj.getString("low","0.0").toDouble()
+
+            val priceClose =  tickerInfoObj.getString("last","0.0").toDouble()
+
+            val volume =  tickerInfoObj.getString("vol","0.0").toDouble()
 
 
             processedData.add(json{
@@ -170,11 +183,13 @@ class Livecoin  : CoroutineVerticle()  {
             })
         }//end loop
 
+
         //println(processedData)
 
         DataPiper.save(processedData)
 
     }//end fun
+
 
 
 }//end class

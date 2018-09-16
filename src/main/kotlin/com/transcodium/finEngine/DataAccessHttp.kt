@@ -15,8 +15,12 @@
 package com.transcodium.finEngine
 
 import io.vertx.core.http.HttpServerOptions
+import io.vertx.core.json.JsonArray
 import io.vertx.ext.web.Router
+import io.vertx.ext.web.RoutingContext
 import io.vertx.kotlin.coroutines.CoroutineVerticle
+import io.vertx.kotlin.coroutines.dispatcher
+import kotlinx.coroutines.experimental.launch
 
 class DataAccessHttp : CoroutineVerticle() {
 
@@ -56,22 +60,20 @@ class DataAccessHttp : CoroutineVerticle() {
 
         val router = Router.router(vertx)
 
-        //we will produce json
-        router.route().produces("application/json")
 
         //lets check if we have api keys
         if(dataAccessAPIKey != null){
             router.route().handler {ctx->
 
-                val apiKey = ctx.request().getFormAttribute("api_key") ?: ""
+                val apiKey = ctx.request().getParam("api_key") ?: ""
 
                 if(apiKey.isEmpty()){
-                    ctx.response().end(Status.error("API Key is required").toJsonString())
+                    response(ctx,Status.error("API Key is required"))
                     return@handler
                 }
 
                 if(apiKey != dataAccessAPIKey){
-                    ctx.response().end(Status.error("API Key is not valid").toJsonString())
+                    response(ctx,Status.error("API Key is not valid"))
                     return@handler
                 }
 
@@ -82,8 +84,10 @@ class DataAccessHttp : CoroutineVerticle() {
 
 
         //listen to aggregates
-        router.route().handler { ctx ->
-            ctx.response().end("Hello World")
+        router.get("/aggregate").handler { ctx ->
+            launch(vertx.dispatcher()){
+                aggregateHandler(ctx)
+            }
         }
 
         vertx.createHttpServer(serverOpts)
@@ -98,5 +102,37 @@ class DataAccessHttp : CoroutineVerticle() {
                 }
     }//end fun
 
+    /**
+     * jsonResponse
+     */
+    fun response(ctx: RoutingContext,status: Status){
+        ctx.response()
+                .setStatusCode(200)
+                .putHeader("Content-Type","application/json")
+                .end(status.toJsonString())
+    }
+
+
+    /**
+     * aggregate Handler
+     */
+    suspend fun aggregateHandler(ctx: RoutingContext){
+
+        val request = ctx.request()
+
+        val symbols = request.getParam("symbols") ?: null
+
+        var symbolsList :JsonArray? = null
+
+        if(!symbols.isNullOrEmpty()){
+            symbolsList = JsonArray(symbols!!.split(","))
+        }
+
+        val interval = request.getParam("intervals") ?: "minute"
+
+        val dataStatus =  StatsData.aggregate(symbolsList,interval)
+
+        response(ctx,dataStatus)
+    }//end
 
 }//end class

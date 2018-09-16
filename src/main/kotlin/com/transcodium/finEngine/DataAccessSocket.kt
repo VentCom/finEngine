@@ -14,21 +14,14 @@
 
 package com.transcodium.finEngine
 
-import com.mongodb.client.model.*
-import com.mongodb.client.model.Aggregates.*
+
 import io.vertx.core.http.HttpServerOptions
 import io.vertx.core.http.ServerWebSocket
 import io.vertx.core.json.JsonArray
 import io.vertx.core.logging.LoggerFactory
 import io.vertx.kotlin.coroutines.CoroutineVerticle
-import io.vertx.kotlin.coroutines.awaitEvent
 import io.vertx.kotlin.coroutines.dispatcher
 import kotlinx.coroutines.experimental.launch
-import org.bson.Document
-import java.time.LocalDateTime
-import java.time.LocalTime
-import java.time.ZoneId
-import java.time.ZoneOffset
 
 
 class DataAccessSocket: CoroutineVerticle() {
@@ -47,6 +40,8 @@ class DataAccessSocket: CoroutineVerticle() {
         startWebsocketServer()
     }//end fun
 
+    val dataUpdateDelay = 30000L
+
     /**
      * start websocket server
      */
@@ -61,8 +56,8 @@ class DataAccessSocket: CoroutineVerticle() {
                 .setReusePort(true)
 
 
-        val sockServer = vertx.createHttpServer(serverOpts)
-                .websocketHandler { req->  webSocketServerHandler(req)}
+         vertx.createHttpServer(serverOpts)
+                .websocketHandler { req-> webSocketServerHandler(req) }
                 .listen(port,address){  res->
 
                     if(res.failed()){
@@ -77,7 +72,7 @@ class DataAccessSocket: CoroutineVerticle() {
     /**
      * websocket server handler
      */
-    fun webSocketServerHandler(ws: ServerWebSocket) {
+     fun webSocketServerHandler(ws: ServerWebSocket) {
 
         val dataAccessAPIKey = appConfig.getString("data_access_api_key", "")
 
@@ -117,17 +112,26 @@ class DataAccessSocket: CoroutineVerticle() {
 
 
             //symbols
-            val symbols: JsonArray? = data.getJsonArray("symbols",null)
+            val symbols = data.getJsonArray("symbols",null)
 
             val period = data.getString("period","hourly")
 
-            //coroutines
+            //launch coroutine
             launch(vertx.dispatcher()) {
+                //start instantly
+                ws.writeTextMessage(StatsData.aggregate(symbols, period).toJsonString())
+            }//end
 
-                val statsDataStatus = StatsData.aggregate(null, period)
+            //loop
+            vertx.setPeriodic(dataUpdateDelay) {
+                //coroutines
+                launch(vertx.dispatcher()) {
+                    val statsDataStatus = StatsData.aggregate(symbols, period)
 
-                println(statsDataStatus)
-            }//end coroutines
+                    //send reply
+                    ws.writeTextMessage(statsDataStatus.toJsonString())
+                }//end coroutines
+            }//end
 
         }//end handler
 

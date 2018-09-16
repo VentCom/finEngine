@@ -139,7 +139,7 @@ class MongoDB private constructor(){
         fun insert(
                 collection: String,
                 data: Document,
-                lambda: (result: String, t: Throwable)-> Unit
+                lambda: (result: String, t: Throwable?)-> Unit
         ){
 
             if(!data.containsKey("_id")){

@@ -32,6 +32,7 @@ import io.vertx.kotlin.core.net.NetClientOptions
 import io.vertx.kotlin.coroutines.CoroutineVerticle
 import io.vertx.kotlin.coroutines.dispatcher
 import kotlinx.coroutines.experimental.launch
+import org.bson.Document
 
 
 class Binance : CoroutineVerticle() {
@@ -59,9 +60,13 @@ class Binance : CoroutineVerticle() {
             System.exit(1)
         }
 
-        val driverInfo = driverInfoStatus.data() as JsonObject
+        val driverInfo = driverInfoStatus.getData<Document>()!!
 
-        driverId = driverInfo.getString("_id")
+        driverId = try{
+            driverInfo.getString("_id")
+        }catch(e: Exception){
+            driverInfo.getObjectId("_id").toHexString()
+        }
 
 
         driverConfig = config.getJsonObject(driverName)
@@ -156,9 +161,17 @@ class Binance : CoroutineVerticle() {
 
             val pair =    dataObj.getString("s").toLowerCase()
 
-            val firstAsset = pair.substring(0,2)
+            var firstAsset: String
+            var secondAsset: String
 
-            val secondAsset = pair.substring(2,pair.length)
+            if(pair.matches("^(btc|eth|bnb).+".toRegex())){
+                firstAsset = pair.substring(0,3)
+                secondAsset = pair.substring(3,pair.length)
+            }else{
+                secondAsset = pair.substring(pair.length - 3,pair.length)
+                firstAsset = pair.substring(0,(pair.length - secondAsset.length))
+            }
+
 
             val symbol = "$firstAsset.$secondAsset"
 

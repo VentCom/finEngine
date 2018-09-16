@@ -2,16 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="140eb769-9af3-48af-88cb-cd20566f7301" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/DataAccessSocket.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.4/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.4/fileHashes/fileHashes.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.4/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.4/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/app.conf" beforeDir="false" afterPath="$PROJECT_DIR$/config/app.conf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_piper/186054882991386.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/drivers.conf" beforeDir="false" afterPath="$PROJECT_DIR$/config/drivers.conf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/drivers/binance.conf" beforeDir="false" afterPath="$PROJECT_DIR$/config/drivers/binance.conf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/StatsData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/StatsData.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/AppMain.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/AppMain.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/DataAccessBridgeVerticle.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/DataAccessHttp.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/DataAccessHttp.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/DataAccessSocket.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/DataAccessSocket.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/Helpers.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/Helpers.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/Market.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/Market.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/MongoDB.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/MongoDB.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/Status.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/Status.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/drivers/Binance.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/drivers/Binance.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/drivers/Livecoin.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/drivers/Livecoin.kt" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/" />
@@ -47,11 +50,53 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="Binance.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/drivers/Binance.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="254">
+              <caret line="37" column="14" selection-start-line="37" selection-start-column="14" selection-end-line="81" />
+              <folding>
+                <element signature="e#507#1299#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="drivers.conf" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/config/drivers.conf">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="304">
+              <caret line="16" column="10" selection-start-line="16" selection-start-column="10" selection-end-line="16" selection-end-column="10" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Bancor.kt" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/drivers/Bancor.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="786">
+              <caret line="151" column="10" selection-start-line="151" selection-start-column="10" selection-end-line="151" selection-end-column="10" />
+              <folding>
+                <element signature="e#507#746#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="yobit.conf" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/config/drivers/yobit.conf">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="342">
+              <caret line="19" column="54" selection-start-line="19" selection-start-column="23" selection-end-line="19" selection-end-column="54" />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="Livecoin.kt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/drivers/Livecoin.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="485">
-              <caret line="116" column="26" selection-start-line="116" selection-start-column="9" selection-end-line="116" selection-end-column="26" />
+            <state relative-caret-position="67">
+              <caret line="46" lean-forward="true" selection-start-line="45" selection-end-line="52" selection-end-column="5" />
               <folding>
                 <element signature="e#507#1031#0" expanded="true" />
               </folding>
@@ -59,86 +104,56 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DataAccessSocket.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/DataAccessSocket.kt">
+      <file leaf-file-name="livecoin.conf" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/config/drivers/livecoin.conf">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="623">
-              <caret line="81" column="31" selection-start-line="81" selection-end-line="82" />
+            <state relative-caret-position="276">
+              <caret line="19" column="64" lean-forward="true" selection-start-line="19" selection-start-column="64" selection-end-line="19" selection-end-column="64" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Market.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/Market.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-366">
+              <caret line="65" selection-start-line="65" selection-end-line="65" />
               <folding>
-                <element signature="e#499#1029#0" expanded="true" />
+                <element signature="e#499#797#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DataAccessHttp.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/DataAccessHttp.kt">
+      <file leaf-file-name="bancor.conf" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/config/drivers/bancor.conf">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="19">
-              <caret line="40" column="62" selection-start-line="40" selection-start-column="62" selection-end-line="40" selection-end-column="62" />
+            <state relative-caret-position="304">
+              <caret line="21" column="12" selection-start-line="21" selection-start-column="5" selection-end-line="21" selection-end-column="12" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MongoDB.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/MongoDB.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-26">
+              <caret line="141" column="54" selection-start-line="141" selection-start-column="54" selection-end-line="141" selection-end-column="54" />
               <folding>
-                <element signature="e#499#594#0" expanded="true" />
+                <element signature="e#499#894#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="build.gradle" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/build.gradle">
+      <file leaf-file-name="Topbtc.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/drivers/Topbtc.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="205">
-              <caret line="53" selection-start-line="53" selection-end-line="53" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="app.conf" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/config/app.conf">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="215">
-              <caret line="25" column="36" selection-start-line="25" selection-start-column="27" selection-end-line="25" selection-end-column="36" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="StatsData.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/kotlin/StatsData.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="196">
-              <caret line="31" selection-start-line="31" selection-end-line="31" />
+            <state relative-caret-position="85">
+              <caret line="120" column="10" selection-start-line="117" selection-end-line="132" />
               <folding>
-                <element signature="e#0#235#0" expanded="true" />
+                <element signature="e#507#1143#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="StatItem.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/StatItem.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="32" column="5" selection-start-line="32" selection-start-column="5" selection-end-line="32" selection-end-column="5" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AppMain.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/AppMain.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="234">
-              <caret line="80" selection-start-line="80" selection-end-line="80" />
-              <folding>
-                <element signature="n#!!doc" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Helpers.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/Helpers.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="935">
-              <caret line="214" selection-start-line="214" selection-end-line="214" />
             </state>
           </provider>
         </entry>
@@ -643,8 +658,6 @@
         <option value="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/Drivers/Binance.kt" />
         <option value="$PROJECT_DIR$/config/drivers/drivers.conf" />
         <option value="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/ConfigManager.kt" />
-        <option value="$PROJECT_DIR$/config/drivers/binance.conf" />
-        <option value="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/Status.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/Models/Markets.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/Models/Market.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/models/Market.kt" />
@@ -654,29 +667,38 @@
         <option value="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/models/AssetStats.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/StatusCodes.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/StatItem.kt" />
-        <option value="$PROJECT_DIR$/config/drivers.conf" />
         <option value="$PROJECT_DIR$/config/drivers/livecoin.conf" />
         <option value="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/DataPipeVerticle.kt" />
-        <option value="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/drivers/Binance.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/DB.kt" />
         <option value="$PROJECT_DIR$/config/database.conf" />
-        <option value="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/MongoDB.kt" />
-        <option value="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/Market.kt" />
-        <option value="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/drivers/Livecoin.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/DataPiper.kt" />
-        <option value="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/Helpers.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/DataAccessBridgeVerticle.kt" />
-        <option value="$PROJECT_DIR$/src/main/kotlin/StatsData.kt" />
-        <option value="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/DataAccessSocket.kt" />
         <option value="$PROJECT_DIR$/build.gradle" />
-        <option value="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/AppMain.kt" />
-        <option value="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/DataAccessHttp.kt" />
         <option value="$PROJECT_DIR$/config/app.conf" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/Status.kt" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/DataAccessSocket.kt" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/DataAccessHttp.kt" />
+        <option value="$PROJECT_DIR$/config/drivers/binance.conf" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/AppMain.kt" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/drivers/Binance.kt" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/MongoDB.kt" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/drivers/Livecoin.kt" />
+        <option value="$PROJECT_DIR$/config/drivers/yobit.conf" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/StatsData.kt" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/Helpers.kt" />
+        <option value="$PROJECT_DIR$/config/drivers/topbtc.conf" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/drivers/Yobit.kt" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/Market.kt" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/drivers/Topbtc.kt" />
+        <option value="$PROJECT_DIR$/config/drivers/bancor.conf" />
+        <option value="$PROJECT_DIR$/config/drivers.conf" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/drivers/Bancor.kt" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="y" value="23" />
+    <option name="x" value="4" />
+    <option name="y" value="35" />
     <option name="width" value="1440" />
     <option name="height" value="810" />
   </component>
@@ -757,6 +779,9 @@
     <property name="project.structure.side.proportion" value="0.0" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/config/drivers" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/kotlin" />
     </key>
@@ -840,24 +865,24 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1440" height="810" extended-state="0" />
+    <frame x="4" y="35" width="1440" height="810" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Messages" order="11" weight="0.32608697" />
+      <window_info anchor="bottom" id="Messages" order="10" weight="0.32608697" />
       <window_info anchor="right" id="Palette&#9;" order="8" />
       <window_info id="Image Layers" order="2" />
       <window_info anchor="right" id="Capture Analysis" order="4" />
-      <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
+      <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
       <window_info anchor="right" id="Maven Projects" order="7" />
       <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.35072464" />
       <window_info anchor="bottom" id="Version Control" order="9" weight="0.32838285" />
-      <window_info anchor="bottom" id="Terminal" order="7" weight="0.32838285" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.32753623" />
       <window_info id="Capture Tool" order="6" />
       <window_info id="Designer" order="3" />
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20243205" />
-      <window_info anchor="bottom" id="Build" order="10" weight="0.32753623" />
+      <window_info anchor="bottom" id="Build" order="11" weight="0.32753623" />
       <window_info anchor="right" id="Gradle" order="5" weight="0.32956383" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -920,49 +945,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/AppMain.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="304">
-          <caret line="16" column="26" selection-start-line="16" selection-start-column="26" selection-end-line="16" selection-end-column="26" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/config/drivers.conf">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="494">
-          <caret line="26" selection-start-line="26" selection-end-line="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="95">
-          <caret line="5" column="25" selection-start-line="5" selection-start-column="21" selection-end-line="5" selection-end-column="53" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/CollectorVerticle.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="228">
-          <caret line="24" selection-start-line="24" selection-end-line="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/config/supported_assets.conf" />
-    <entry file="file://$PROJECT_DIR$/config/drivers/drivers.conf" />
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/Status.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="893">
-          <caret line="59" column="39" selection-start-line="59" selection-start-column="39" selection-end-line="59" selection-end-column="39" />
-          <folding>
-            <element signature="e#499#623#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/models/Assets.kt" />
     <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/models/AssetStats.kt" />
     <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/models/Markets.kt" />
@@ -1073,27 +1055,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/config/drivers/binance.conf">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="228">
-          <caret line="12" selection-start-line="12" selection-end-line="28" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/config/drivers.conf">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="228">
-          <caret line="12" column="22" selection-start-line="12" selection-start-column="22" selection-end-line="12" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/config/drivers/livecoin.conf">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="266">
-          <caret line="14" column="15" selection-start-line="14" selection-start-column="15" selection-end-line="14" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.vertx/vertx-web-client/3.5.3/83dcd9a71f205aa1c543638751fa83e371065ba7/vertx-web-client-3.5.3-sources.jar!/io/vertx/ext/web/client/WebClient.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-535">
@@ -1125,13 +1086,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/drivers/Binance.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="183">
-          <caret line="94" selection-start-line="94" selection-end-line="100" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mongodb/mongodb-driver-core/3.8.1/f017c45c6a5f5c308751ea951ca29e0f8bc08c12/mongodb-driver-core-3.8.1-sources.jar!/com/mongodb/client/model/Filters.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-417">
@@ -1149,33 +1103,6 @@
     <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/DB.kt">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/config/database.conf">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="463">
-          <caret line="32" column="26" selection-start-line="32" selection-start-column="17" selection-end-line="32" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/Market.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="836">
-          <caret line="72" column="51" selection-start-line="72" selection-start-column="51" selection-end-line="72" selection-end-column="51" />
-          <folding>
-            <element signature="e#499#797#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/MongoDB.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="311">
-          <caret line="99" column="67" selection-start-line="99" selection-start-column="67" selection-end-line="99" selection-end-column="67" />
-          <folding>
-            <element signature="e#499#894#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/DataPiper.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-106">
@@ -1190,13 +1117,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="479">
           <caret line="39" column="15" selection-start-line="39" selection-start-column="15" selection-end-line="39" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/Helpers.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="935">
-          <caret line="214" selection-start-line="214" selection-end-line="214" />
         </state>
       </provider>
     </entry>
@@ -1221,26 +1141,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/drivers/Livecoin.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="485">
-          <caret line="116" column="26" selection-start-line="116" selection-start-column="9" selection-end-line="116" selection-end-column="26" />
-          <folding>
-            <element signature="e#507#1031#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/StatsData.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="196">
-          <caret line="31" selection-start-line="31" selection-end-line="31" />
-          <folding>
-            <element signature="e#0#235#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="205">
@@ -1248,40 +1148,186 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/AppMain.kt">
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/Status.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="80" selection-start-line="80" selection-end-line="80" />
+        <state relative-caret-position="475">
+          <caret line="269" column="22" selection-start-line="269" selection-start-column="22" selection-end-line="269" selection-end-column="22" />
           <folding>
-            <element signature="n#!!doc" expanded="true" />
+            <element signature="e#499#674#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/DataAccessSocket.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="623">
-          <caret line="81" column="31" selection-start-line="81" selection-end-line="82" />
+        <state relative-caret-position="1737">
+          <caret line="114" column="59" selection-start-line="114" selection-start-column="59" selection-end-line="114" selection-end-column="59" />
           <folding>
-            <element signature="e#499#1029#0" expanded="true" />
+            <element signature="e#500#807#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/DataAccessHttp.kt">
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/AppMain.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="19">
-          <caret line="40" column="62" selection-start-line="40" selection-start-column="62" selection-end-line="40" selection-end-column="62" />
+        <state relative-caret-position="158">
+          <caret line="102" column="21" selection-start-line="102" selection-start-column="21" selection-end-line="102" selection-end-column="21" />
           <folding>
-            <element signature="e#499#594#0" expanded="true" />
+            <element signature="n#!!doc" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/database.conf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="371">
+          <caret line="32" column="26" selection-start-line="32" selection-start-column="17" selection-end-line="32" selection-end-column="26" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/config/app.conf">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="215">
-          <caret line="25" column="36" selection-start-line="25" selection-start-column="27" selection-end-line="25" selection-end-column="36" />
+        <state relative-caret-position="282">
+          <caret line="21" column="37" selection-start-line="21" selection-start-column="27" selection-end-line="21" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/DataAccessHttp.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="981">
+          <caret line="130" column="48" selection-start-line="130" selection-start-column="48" selection-end-line="130" selection-end-column="48" />
+          <folding>
+            <element signature="e#499#755#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/Helpers.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="287">
+          <caret line="216" selection-start-line="216" selection-end-line="216" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/drivers/Yobit.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="734">
+          <caret line="192" column="8" selection-start-line="192" selection-start-column="8" selection-end-line="192" selection-end-column="8" />
+          <folding>
+            <element signature="e#507#1172#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/drivers/topbtc.conf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="326">
+          <caret line="21" column="38" selection-start-line="21" selection-start-column="23" selection-end-line="21" selection-end-column="65" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/drivers/binance.conf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="276">
+          <caret line="21" selection-start-line="21" selection-end-line="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/StatsData.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="184">
+          <caret line="126" column="13" selection-start-line="126" selection-start-column="13" selection-end-line="126" selection-end-column="13" />
+          <folding>
+            <element signature="e#0#235#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/drivers/yobit.conf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="342">
+          <caret line="19" column="54" selection-start-line="19" selection-start-column="23" selection-end-line="19" selection-end-column="54" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/MongoDB.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-26">
+          <caret line="141" column="54" selection-start-line="141" selection-start-column="54" selection-end-line="141" selection-end-column="54" />
+          <folding>
+            <element signature="e#499#894#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/drivers.conf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="304">
+          <caret line="16" column="10" selection-start-line="16" selection-start-column="10" selection-end-line="16" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/drivers/Binance.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="254">
+          <caret line="37" column="14" selection-start-line="37" selection-start-column="14" selection-end-line="81" />
+          <folding>
+            <element signature="e#507#1299#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/drivers/Livecoin.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="67">
+          <caret line="46" lean-forward="true" selection-start-line="45" selection-end-line="52" selection-end-column="5" />
+          <folding>
+            <element signature="e#507#1031#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/drivers/livecoin.conf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="276">
+          <caret line="19" column="64" lean-forward="true" selection-start-line="19" selection-start-column="64" selection-end-line="19" selection-end-column="64" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/drivers/bancor.conf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="304">
+          <caret line="21" column="12" selection-start-line="21" selection-start-column="5" selection-end-line="21" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/Market.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-366">
+          <caret line="65" selection-start-line="65" selection-end-line="65" />
+          <folding>
+            <element signature="e#499#797#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/drivers/Topbtc.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="120" column="10" selection-start-line="117" selection-end-line="132" />
+          <folding>
+            <element signature="e#507#1143#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/transcodium/finEngine/drivers/Bancor.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="786">
+          <caret line="151" column="10" selection-start-line="151" selection-start-column="10" selection-end-line="151" selection-end-column="10" />
+          <folding>
+            <element signature="e#507#746#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

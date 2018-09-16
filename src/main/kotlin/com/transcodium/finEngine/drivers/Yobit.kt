@@ -19,6 +19,7 @@ import com.transcodium.finEngine.Market
 import com.transcodium.finEngine.StatItem
 import com.transcodium.finEngine.fatalExit
 import io.vertx.core.AsyncResult
+import io.vertx.core.Handler
 import io.vertx.core.buffer.Buffer
 import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
@@ -31,23 +32,27 @@ import io.vertx.kotlin.core.json.obj
 import io.vertx.kotlin.coroutines.CoroutineVerticle
 import org.bson.Document
 
-class Livecoin  : CoroutineVerticle()  {
+class Yobit : CoroutineVerticle(){
 
     val logger by lazy {
         LoggerFactory.getLogger(this::class.java)
     }
 
 
-    val driverName = "livecoin"
+    val driverName = "yobit"
+
     lateinit var driverConfig : JsonObject
 
     lateinit var driverId: String
 
     val webClient by lazy{
 
+        val userAgent = "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0"
+
         val webclientOpts = WebClientOptions()
                 .setFollowRedirects(true)
                 .setTrustAll(true)
+                .setUserAgent(userAgent)
 
         WebClient.create(vertx,webclientOpts)
     }
@@ -79,11 +84,10 @@ class Livecoin  : CoroutineVerticle()  {
         fetchTickerData()
     }//end fun
 
-
     /**
      * fetchTickerData
      */
-     fun fetchTickerData(){
+    fun fetchTickerData(){
 
         //lets get endpoin
         val endpoint =  driverConfig.getString("data_endpoint","")
@@ -95,11 +99,23 @@ class Livecoin  : CoroutineVerticle()  {
 
         val delay = (driverConfig.getInteger("delay",30) * 1000).toLong()
 
+        val tickerPairs = driverConfig.getJsonArray("pairs",null)
 
-        val httpRequest = webClient.getAbs(endpoint)
+        if(tickerPairs == null){
+            logger.fatal("$driverName Ticker pairs are required")
+            return
+        }
 
-        //imediate start
-        httpRequest.send{resp-> onHttpResult(resp)}
+        val concatPairs = tickerPairs.joinToString("-")
+
+        val url = "$endpoint/$concatPairs"
+
+        val httpRequest = webClient.getAbs(url)
+                .putHeader("Accept","application/json, text/javascript, */*; q=0.01")
+                .putHeader("Content-Type","application/x-www-form-urlencoded")
+
+        //immediate start
+        httpRequest.send{resp-> onHttpResult(resp) }
 
         //poll request
         vertx.setPeriodic(delay){ httpRequest.send{resp-> onHttpResult(resp) } }//end peroidic
@@ -117,7 +133,7 @@ class Livecoin  : CoroutineVerticle()  {
             return
         }
 
-        val dataJson = resp.result().bodyAsJsonArray()
+        val dataJson = resp.result().bodyAsJsonObject()
 
         processMarketData(dataJson)
     }//end fun
@@ -126,23 +142,24 @@ class Livecoin  : CoroutineVerticle()  {
     /**
      * processData
      */
-     fun processMarketData(dataArray: JsonArray){
+    fun processMarketData(allDataObj: JsonObject){
 
-        if(dataArray.isEmpty){
+        if(allDataObj.isEmpty){
             return
         }
 
         val processedData = JsonArray()
 
 
-        dataArray.forEach { dataObj ->
+        for((pairStr,dataObj) in allDataObj){
 
             dataObj as JsonObject
 
+
             val eventTime = System.currentTimeMillis()
 
-            val pair =    dataObj.getString("symbol").toLowerCase()
-                                        .replace("/",".")
+            val pair =    pairStr.toLowerCase()
+                                        .replace("_",".")
 
 
             val priceHigh = dataObj.getDouble("high",0.0)
@@ -151,7 +168,7 @@ class Livecoin  : CoroutineVerticle()  {
 
             val priceClose =  dataObj.getDouble("last",0.0)
 
-            val volume =  dataObj.getDouble("volume",0.0)
+            val volume =  dataObj.getDouble("vol",0.0)
 
 
             processedData.add(json{
@@ -165,9 +182,10 @@ class Livecoin  : CoroutineVerticle()  {
                                 StatItem.PRICE_CLOSE to priceClose
                         ),
 
-                        StatItem.VOLUME       to volume
+                        StatItem.VOLUME to volume
                 )
             })
+
         }//end loop
 
         //println(processedData)
@@ -177,4 +195,5 @@ class Livecoin  : CoroutineVerticle()  {
     }//end fun
 
 
-}//end class
+}//end
+
