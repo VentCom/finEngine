@@ -14,17 +14,17 @@
 
 package com.transcodium.finEngine.drivers
 
-import com.transcodium.finEngine.DataPiper
-import com.transcodium.finEngine.Market
-import com.transcodium.finEngine.StatItem
+import com.transcodium.finEngine.*
 import com.transcodium.finEngine.StatItem.Companion.PRICE_LOW
-import com.transcodium.finEngine.fatalExit
+import io.vertx.core.AsyncResult
 import io.vertx.core.Vertx
+import io.vertx.core.buffer.Buffer
 import io.vertx.core.http.HttpClientOptions
 import io.vertx.core.http.RequestOptions
 import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 import io.vertx.core.logging.LoggerFactory
+import io.vertx.ext.web.client.HttpResponse
 import io.vertx.kotlin.core.json.JsonArray
 import io.vertx.kotlin.core.json.json
 import io.vertx.kotlin.core.json.obj
@@ -77,14 +77,15 @@ class Binance : CoroutineVerticle() {
         }
 
 
-        fetchMarketDataStream(vertx)
+        //start http stream
+        fetchMarketHttpDataStream()
     }//end
 
 
     /**
      * fetchMarketDataStream
      */
-    suspend fun fetchMarketDataStream(vertx: Vertx){
+    suspend fun fetchWebSocketMarketDataStream(vertx: Vertx){
 
         var options = NetClientOptions(
                 connectTimeout = 10000,
@@ -98,11 +99,15 @@ class Binance : CoroutineVerticle() {
 
         val client = vertx.createHttpClient(httpOpts)
 
+        val websocketHost = driverConfig!!.getString("websocket_host","")
+        val websocketPort = driverConfig!!.getInteger("websocket_port",0)
+        val websocketUri = driverConfig!!.getString("websocket_uri","")
+
         val socOptions = RequestOptions()
                 .setSsl(true)
-                .setHost("stream.binance.com")
-                .setPort(9443)
-                .setURI("/ws/!ticker@arr")
+                .setHost(websocketHost)
+                .setPort(websocketPort)
+                .setURI(websocketUri)
 
 
         val dataPiper = DataPiper
@@ -120,7 +125,7 @@ class Binance : CoroutineVerticle() {
 
                 launch(vertx.dispatcher()) {
 
-                    processAndSaveMarketStream(h.toJsonArray())
+                    processAndSaveWebSocketMarketStream(h.toJsonArray())
 
                 }//end coroutine
              }//end handler
@@ -134,7 +139,7 @@ class Binance : CoroutineVerticle() {
 
               vertx.setTimer(wsReconnectWaitTime){
                   launch(vertx.dispatcher()) {
-                      fetchMarketDataStream(vertx)
+                      fetchWebSocketMarketDataStream(vertx)
                   }
               }//end timer
             }
@@ -143,10 +148,136 @@ class Binance : CoroutineVerticle() {
 
     }//end fun
 
+
+
+    /**
+     * onHttpResult
+     */
+    private fun onHttpResult(resp: AsyncResult<HttpResponse<Buffer>>){
+
+        if(resp.failed()){
+            logger.fatal(resp.cause().message,resp.cause())
+            return
+        }
+
+        processHttpMarketData(resp.result().bodyAsJsonArray())
+    }//end fun
+
+
+    /**
+     * fetchMarketHttpDataStream
+     */
+    suspend fun fetchMarketHttpDataStream(){
+
+        //lets get endpoin
+        val endpoint =  driverConfig!!.getString("data_endpoint","")
+
+        if(endpoint.isEmpty()){
+            logger.fatal("$driverName Data endpoint is required in /config/drivers/livecoin.conf")
+            return
+        }
+
+        val delay = (driverConfig!!.getInteger("delay",30) * 1000).toLong()
+
+        val webClient =  getWebClient()
+
+        val httpRequest = webClient.getAbs(endpoint)
+
+        //imediate start
+        httpRequest.send{resp->onHttpResult(resp)}
+
+        //poll request
+        vertx.setPeriodic(delay){ httpRequest.send{resp-> onHttpResult(resp) } }//end peroidic
+
+    }//end fun
+
+
+    /**
+     * processData
+     */
+    fun processHttpMarketData(dataArray: JsonArray){
+
+        if(dataArray.isEmpty){
+            return
+        }
+
+        val processedData = JsonArray()
+
+
+        dataArray.forEach { dataObj ->
+
+            dataObj as JsonObject
+
+            val eventTime = System.currentTimeMillis()
+
+            val pair =    dataObj.getString("symbol").toLowerCase()
+
+            var firstAsset: String
+            var secondAsset: String
+
+            if(pair.matches("^(btc|eth|bnb).+".toRegex())){
+                firstAsset = pair.substring(0,3)
+                secondAsset = pair.substring(3,pair.length)
+            }else{
+                secondAsset = pair.substring(pair.length - 3,pair.length)
+                firstAsset = pair.substring(0,(pair.length - secondAsset.length))
+            }
+
+            val symbol = "$firstAsset.$secondAsset"
+
+            //val priceChange = dataObj.getString("priceChange").toDoubleOrNull()
+
+            //val priceChangePercent = dataObj.getString("P").toFloat()
+
+            val priceHigh = dataObj.getString("highPrice").toDoubleOrNull()
+
+            val priceLow = dataObj.getString("lowPrice").toDoubleOrNull()
+
+            val priceOpen = dataObj.getString("openPrice").toDoubleOrNull()
+
+            val priceClose =  dataObj.getString("lastPrice").toDoubleOrNull()
+
+            val volume =  dataObj.getString("volume").toDoubleOrNull()
+
+            val volumeQoute = dataObj.getString("quoteVolume").toDoubleOrNull()
+
+
+
+            processedData.add(json{
+                obj(
+                        StatItem.TIME  to eventTime,
+                        StatItem.PAIR to symbol,
+                        StatItem.MARKET_ID to driverId,
+                        StatItem.PRICE to obj(
+
+                                //StatItem.PRICE_CHANGE to priceChange,
+                               // StatItem.PRICE_CHANGE_PERCENT to priceChangePercent,
+                                StatItem.PRICE_LOW  to priceLow,
+                                StatItem.PRICE_HIGH  to priceHigh,
+                                StatItem.PRICE_OPEN  to priceOpen,
+                                StatItem.PRICE_CLOSE to priceClose
+                        ),
+
+                        StatItem.VOLUME       to volume,
+                        StatItem.VOLUME_QUOTE to volumeQoute
+                )
+            })
+
+        }//end loop
+
+       // println(processedData)
+
+        DataPiper.save(processedData)
+
+    }//end fun
+
+
+
     /**
      * save market stream data
      */
-    fun processAndSaveMarketStream(dataArray: JsonArray){
+    fun processAndSaveWebSocketMarketStream(dataArray: JsonArray){
+
 
         val processedData = JsonArray()
 

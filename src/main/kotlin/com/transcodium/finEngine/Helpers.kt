@@ -18,9 +18,11 @@ import com.transcodium.mothership.core.StatusCodes
 import io.vertx.core.AsyncResult
 import io.vertx.core.Handler
 import io.vertx.core.Vertx
+import io.vertx.core.buffer.Buffer
 import io.vertx.core.json.JsonObject
 import io.vertx.core.logging.Logger
 import io.vertx.core.logging.LoggerFactory
+import io.vertx.ext.web.client.HttpResponse
 import io.vertx.ext.web.client.WebClient
 import io.vertx.ext.web.client.WebClientOptions
 import io.vertx.kotlin.core.json.get
@@ -214,3 +216,35 @@ fun mongoDate(customDate: Instant? = null): JsonObject{
     }
 }
 
+
+/**
+ * webclient
+ */
+fun getWebClient(): WebClient {
+
+    val webclientOpts = WebClientOptions()
+            .setFollowRedirects(true)
+            .setTrustAll(true)
+
+   return  WebClient.create(vertxInst(),webclientOpts)
+}
+
+
+
+/**
+ * onHttpResult
+ */
+ fun onHttpResult(
+            resp: AsyncResult<HttpResponse<Buffer>>,
+            lambda: (String) -> Unit
+){
+
+    if(resp.failed()){
+        logger.fatal(resp.cause().message,resp.cause())
+        return
+    }
+
+    val resultJsonStr = resp.result().bodyAsString()
+
+    lambda.invoke(resultJsonStr)
+}//end fun
