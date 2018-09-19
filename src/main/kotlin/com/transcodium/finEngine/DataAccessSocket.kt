@@ -17,7 +17,6 @@ package com.transcodium.finEngine
 
 import io.vertx.core.http.HttpServerOptions
 import io.vertx.core.http.ServerWebSocket
-import io.vertx.core.json.JsonArray
 import io.vertx.core.logging.LoggerFactory
 import io.vertx.kotlin.coroutines.CoroutineVerticle
 import io.vertx.kotlin.coroutines.dispatcher
@@ -47,7 +46,7 @@ class DataAccessSocket: CoroutineVerticle() {
      */
     suspend fun startWebsocketServer(){
 
-       // StatsData.aggregate()
+       // com.transcodium.finEngine.StatsData.aggregate()
 
         val port = appConfig.getInteger("data_access_socket_port",9000)
         val address = appConfig.getString("data_access_address","localhost")

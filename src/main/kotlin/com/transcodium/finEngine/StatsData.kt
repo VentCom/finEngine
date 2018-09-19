@@ -1,6 +1,6 @@
+package com.transcodium.finEngine
+
 import com.mongodb.client.model.Aggregates
-import com.transcodium.finEngine.MongoDB
-import com.transcodium.finEngine.Status
 import io.vertx.core.json.JsonArray
 import io.vertx.kotlin.coroutines.awaitEvent
 import org.bson.Document
@@ -36,7 +36,8 @@ class StatsData {
          */
         suspend fun aggregate(
                 symbols: JsonArray? = null,
-                interval: String? = "hourly"
+                interval: String? = "hourly",
+                since: Long? = null
         ): Status {
 
 
@@ -47,6 +48,7 @@ class StatsData {
             var dateStart: LocalDateTime
             var dateEnd : LocalDateTime = now
 
+            val statSince = since ?: 1
 
             when(interval){
 
@@ -60,7 +62,7 @@ class StatsData {
                                     .append("minute",Document("\$minute","\$t"))
 
                     //stats for last 60minutes
-                    dateStart =  now.minusHours(3)
+                    dateStart =  now.minusMinutes(statSince)
                 }
 
                 "hourly" -> {
@@ -72,7 +74,7 @@ class StatsData {
 
 
                     //stats for last 3 hours
-                    dateStart =  now.minusHours(1)
+                    dateStart =  now.minusHours(statSince)
                 }
 
                 "daily" -> {
@@ -82,7 +84,7 @@ class StatsData {
                                     .append("day",Document("\$dayOfMonth","\$t"))
 
                     // a 7 days interval
-                    dateStart = now.minusDays(3)
+                    dateStart = now.minusDays(statSince)
                 }
 
                 "mothly" -> {
@@ -91,7 +93,7 @@ class StatsData {
                                     .append("month",Document("\$month","\$t"))
 
                     //since last 3 months
-                    dateStart = now.minusMonths(3)
+                    dateStart = now.minusMonths(statSince)
                 }
                 else -> {
                     return Status.error("Unknown date interval")

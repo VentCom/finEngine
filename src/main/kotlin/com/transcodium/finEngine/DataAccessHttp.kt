@@ -130,7 +130,10 @@ class DataAccessHttp : CoroutineVerticle() {
 
         val interval = request.getParam("intervals") ?: "minute"
 
-        val dataStatus =  StatsData.aggregate(symbolsList,interval)
+        val statSince = (request.getParam("since") ?: "10").toLong()
+
+
+        val dataStatus =  StatsData.aggregate(symbolsList,interval,statSince)
 
         response(ctx,dataStatus)
     }//end
