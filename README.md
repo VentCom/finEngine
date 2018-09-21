@@ -11,7 +11,7 @@ An Engine for collecting financial data in realtime to your prefered database
 
  5. the project uses mongo db as backend database, kindly check config folder to change the database credentials
 
-## Ruuning 
+## Running 
  After compiling jar file say app.jar , run app using this command 
 #### java -jar ./app.jar 
 
