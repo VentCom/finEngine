@@ -16,6 +16,7 @@ An Engine for collecting financial data in realtime to your prefered database
 #### java -jar ./app.jar 
 
 ## Accessing Data 
- connect to the server using the websocket configuration in step #2 or http api configuration
+ 1. connect to the server using the websocket configuration in step #4 or http api configuration
  
- 
+ ## Querying Data Server
+ Currently our aggregates is supported :
