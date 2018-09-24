@@ -41,6 +41,49 @@ class Livecoin  : DriverBase()  {
 
 
     /**
+     * fetchTickerData
+     */
+     fun fetchTickerData(){
+
+        //lets get endpoin
+        val endpoint =  driverConfig.getString("data_endpoint","")
+
+        if(endpoint.isEmpty()){
+            logger.fatal("$driverName Data endpoint is required in /config/drivers/livecoin.conf")
+            return
+        }
+
+        val delay = (driverConfig.getInteger("delay",30) * 1000).toLong()
+
+
+        val httpRequest = webClient.getAbs(endpoint)
+
+        //imediate start
+        httpRequest.send{resp-> onHttpResult(resp)}
+
+        //poll request
+        vertx.setPeriodic(delay){ httpRequest.send{resp-> onHttpResult(resp) } }//end peroidic
+
+    }//end fun
+
+
+    /**
+     * onHttpResult
+     */
+    private fun onHttpResult(resp: AsyncResult<HttpResponse<Buffer>>){
+
+        if(resp.failed()){
+            logger.fatal(resp.cause().message,resp.cause())
+            return
+        }
+
+        val dataJson = resp.result().bodyAsJsonArray()
+
+        processMarketData(dataJson)
+    }//end fun
+
+
+    /**
      * processData
      */
      fun processMarketData(dataArray: JsonArray){
