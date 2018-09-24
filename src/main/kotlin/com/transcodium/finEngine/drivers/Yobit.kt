@@ -15,72 +15,21 @@
 package com.transcodium.finEngine.drivers
 
 import com.transcodium.finEngine.DataPiper
-import com.transcodium.finEngine.Market
 import com.transcodium.finEngine.StatItem
-import com.transcodium.finEngine.fatalExit
 import io.vertx.core.AsyncResult
-import io.vertx.core.Handler
 import io.vertx.core.buffer.Buffer
 import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
-import io.vertx.core.logging.LoggerFactory
 import io.vertx.ext.web.client.HttpResponse
-import io.vertx.ext.web.client.WebClient
-import io.vertx.ext.web.client.WebClientOptions
 import io.vertx.kotlin.core.json.json
 import io.vertx.kotlin.core.json.obj
-import io.vertx.kotlin.coroutines.CoroutineVerticle
-import org.bson.Document
-
-class Yobit : CoroutineVerticle(){
-
-    val logger by lazy {
-        LoggerFactory.getLogger(this::class.java)
-    }
 
 
-    val driverName = "yobit"
-
-    lateinit var driverConfig : JsonObject
-
-    lateinit var driverId: String
-
-    val webClient by lazy{
-
-        val userAgent = "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0"
-
-        val webclientOpts = WebClientOptions()
-                .setFollowRedirects(true)
-                .setTrustAll(true)
-                .setUserAgent(userAgent)
-
-        WebClient.create(vertx,webclientOpts)
-    }
+class Yobit : DriverBase(){
 
 
     override suspend fun start() {
         super.start()
-
-        driverConfig = config.getJsonObject(driverName)
-
-        //lets get config
-        val driverInfoStatus = Market.getInfo(driverName,true)
-
-        if(driverInfoStatus.isError()){
-            logger.fatalExit(driverInfoStatus.getMessage())
-        }
-
-        //println(driverInfoStatus.data())
-
-        val driverInfo = driverInfoStatus.data() as Document
-
-        driverId = try{
-            driverInfo.getString("_id")
-        }catch(e: Exception){
-            driverInfo.getObjectId("_id").toHexString()
-        }
-
-
         fetchTickerData()
     }//end fun
 
@@ -175,7 +124,7 @@ class Yobit : CoroutineVerticle(){
                 obj(
                         StatItem.TIME  to eventTime,
                         StatItem.PAIR to pair,
-                        StatItem.MARKET_ID to driverId,
+                        StatItem.MARKET_ID to driverName.toLowerCase(),
                         StatItem.PRICE to obj(
                                 StatItem.PRICE_LOW  to priceLow,
                                 StatItem.PRICE_HIGH  to priceHigh,

@@ -100,7 +100,10 @@ class AppMain : CoroutineVerticle(){
 
                      val verticleClass = "${this.javaClass.`package`.name}.drivers.$verticle"
 
-                     print(verticleClass)
+                     config.put("driver_name",driverName)
+
+                    //set config
+                     deployOpts.config = config
 
                      //lets start the verticle
                      vertx.deployVerticle(verticleClass,deployOpts){ res->

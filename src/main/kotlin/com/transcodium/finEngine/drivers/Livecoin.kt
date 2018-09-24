@@ -31,95 +31,12 @@ import io.vertx.kotlin.core.json.obj
 import io.vertx.kotlin.coroutines.CoroutineVerticle
 import org.bson.Document
 
-class Livecoin  : CoroutineVerticle()  {
-
-    val logger by lazy {
-        LoggerFactory.getLogger(this::class.java)
-    }
-
-
-    val driverName = "livecoin"
-    lateinit var driverConfig : JsonObject
-
-    lateinit var driverId: String
-
-    val webClient by lazy{
-
-        val webclientOpts = WebClientOptions()
-                .setFollowRedirects(true)
-                .setTrustAll(true)
-
-        WebClient.create(vertx,webclientOpts)
-    }
+class Livecoin  : DriverBase()  {
 
 
     override suspend fun start() {
         super.start()
-
-        driverConfig = config.getJsonObject(driverName)
-
-        //lets get config
-        val driverInfoStatus = Market.getInfo(driverName,true)
-
-        if(driverInfoStatus.isError()){
-            logger.fatalExit(driverInfoStatus.getMessage())
-        }
-
-        //println(driverInfoStatus.data())
-
-        val driverInfo = driverInfoStatus.data() as Document
-
-        driverId = try{
-            driverInfo.getString("_id")
-        }catch(e: Exception){
-            driverInfo.getObjectId("_id").toHexString()
-        }
-
-
         fetchTickerData()
-    }//end fun
-
-
-    /**
-     * fetchTickerData
-     */
-     fun fetchTickerData(){
-
-        //lets get endpoin
-        val endpoint =  driverConfig.getString("data_endpoint","")
-
-        if(endpoint.isEmpty()){
-            logger.fatal("$driverName Data endpoint is required in /config/drivers/livecoin.conf")
-            return
-        }
-
-        val delay = (driverConfig.getInteger("delay",30) * 1000).toLong()
-
-
-        val httpRequest = webClient.getAbs(endpoint)
-
-        //imediate start
-        httpRequest.send{resp-> onHttpResult(resp)}
-
-        //poll request
-        vertx.setPeriodic(delay){ httpRequest.send{resp-> onHttpResult(resp) } }//end peroidic
-
-    }//end fun
-
-
-    /**
-     * onHttpResult
-     */
-    private fun onHttpResult(resp: AsyncResult<HttpResponse<Buffer>>){
-
-        if(resp.failed()){
-            logger.fatal(resp.cause().message,resp.cause())
-            return
-        }
-
-        val dataJson = resp.result().bodyAsJsonArray()
-
-        processMarketData(dataJson)
     }//end fun
 
 
@@ -158,7 +75,7 @@ class Livecoin  : CoroutineVerticle()  {
                 obj(
                         StatItem.TIME  to eventTime,
                         StatItem.PAIR to pair,
-                        StatItem.MARKET_ID to driverId,
+                        StatItem.MARKET_ID to driverName.toLowerCase(),
                         StatItem.PRICE to obj(
                                 StatItem.PRICE_LOW  to priceLow,
                                 StatItem.PRICE_HIGH  to priceHigh,

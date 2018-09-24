@@ -25,6 +25,7 @@ import io.vertx.kotlin.coroutines.dispatcher
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
 import org.bson.Document
+import org.bson.types.ObjectId
 import java.net.URLDecoder
 import java.net.URLEncoder
 import java.time.Instant
@@ -139,7 +140,9 @@ class DataPiper {
 
                             data.put(StatItem.TIME,mongoDate)
 
-                            InsertOneModel(Document.parse(data.encode()))
+                            val docData =  Document.parse(data.encode())
+
+                            InsertOneModel(docData)
                         }.toMutableList()
 
 

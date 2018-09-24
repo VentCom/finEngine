@@ -41,9 +41,8 @@ class Binance : CoroutineVerticle() {
         LoggerFactory.getLogger(this::class.java)
     }
 
-    val driverName = "binance"
-    var driverId : String? = null
-    var driverConfig: JsonObject? = null
+    lateinit var driverName: String
+    lateinit var driverConfig: JsonObject
 
     val wsReconnectWaitTime = 10000L
 
@@ -52,30 +51,9 @@ class Binance : CoroutineVerticle() {
      */
     override suspend fun start(){
 
-        //lets get config
-        val driverInfoStatus = Market.getInfo(driverName,true)
-
-        if(driverInfoStatus.isError()){
-            logger.fatal(driverInfoStatus.getMessage())
-            System.exit(1)
-        }
-
-        val driverInfo = driverInfoStatus.getData<Document>()!!
-
-        driverId = try{
-            driverInfo.getString("_id")
-        }catch(e: Exception){
-            driverInfo.getObjectId("_id").toHexString()
-        }
-
+        driverName = config.getString("driver_name")
 
         driverConfig = config.getJsonObject(driverName)
-
-        if(driverConfig == null){
-            logger.fatalExit("Config file for $driverName not found")
-            return
-        }
-
 
         //start http stream
         fetchMarketHttpDataStream()
@@ -215,12 +193,12 @@ class Binance : CoroutineVerticle() {
             var firstAsset: String
             var secondAsset: String
 
-            if(pair.matches("^(btc|eth|bnb).+".toRegex())){
-                firstAsset = pair.substring(0,3)
-                secondAsset = pair.substring(3,pair.length)
-            }else{
+            if(pair.matches(".*(btc|eth|bnb)$".toRegex())){
                 secondAsset = pair.substring(pair.length - 3,pair.length)
                 firstAsset = pair.substring(0,(pair.length - secondAsset.length))
+            }else{
+                firstAsset = pair.substring(0,3)
+                secondAsset = pair.substring(3,pair.length)
             }
 
             val symbol = "$firstAsset.$secondAsset"
@@ -247,7 +225,7 @@ class Binance : CoroutineVerticle() {
                 obj(
                         StatItem.TIME  to eventTime,
                         StatItem.PAIR to symbol,
-                        StatItem.MARKET_ID to driverId,
+                        StatItem.MARKET_ID to driverName.toLowerCase(),
                         StatItem.PRICE to obj(
 
                                 //StatItem.PRICE_CHANGE to priceChange,
@@ -327,7 +305,7 @@ class Binance : CoroutineVerticle() {
                 obj(
                         StatItem.TIME  to eventTime,
                         StatItem.PAIR to symbol,
-                        StatItem.MARKET_ID to driverId,
+                        StatItem.MARKET_ID to driverName.toLowerCase(),
                         StatItem.PRICE to obj(
 
                                 StatItem.PRICE_CHANGE to priceChange,

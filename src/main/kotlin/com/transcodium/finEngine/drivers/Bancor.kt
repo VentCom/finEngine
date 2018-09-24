@@ -29,58 +29,16 @@ import io.vertx.ext.web.client.WebClientOptions
 import io.vertx.kotlin.core.json.json
 import io.vertx.kotlin.core.json.obj
 import io.vertx.kotlin.coroutines.CoroutineVerticle
-import org.bson.Document
 
 
-class Bancor : CoroutineVerticle() {
+class Bancor : DriverBase(){
 
-    val logger by lazy {
-        LoggerFactory.getLogger(this::class.java)
-    }
-
-    val driverName = "bancor"
-    var driverId : String? = null
-    var driverConfig: JsonObject? = null
-
-    val webClient by lazy{
-
-        val webclientOpts = WebClientOptions()
-                .setFollowRedirects(true)
-                .setTrustAll(true)
-
-        WebClient.create(vertx,webclientOpts)
-    }
 
     /**
      * start
      */
     override suspend fun start(){
-
-        //lets get config
-        val driverInfoStatus = Market.getInfo(driverName,true)
-
-        if(driverInfoStatus.isError()){
-            logger.fatal(driverInfoStatus.getMessage())
-            System.exit(1)
-        }
-
-        val driverInfo = driverInfoStatus.getData<Document>()!!
-
-        driverId = try{
-            driverInfo.getString("_id")
-        }catch(e: Exception){
-            driverInfo.getObjectId("_id").toHexString()
-        }
-
-
-        driverConfig = config.getJsonObject(driverName)
-
-        if(driverConfig == null){
-            logger.fatalExit("Config file for $driverName not found")
-            return
-        }
-
-
+        super.start()
         fetchTickerData()
     }//end
 
@@ -195,7 +153,7 @@ class Bancor : CoroutineVerticle() {
                 obj(
                         StatItem.TIME  to eventTime,
                         StatItem.PAIR to pair,
-                        StatItem.MARKET_ID to driverId,
+                        StatItem.MARKET_ID to driverName.toLowerCase(),
                         StatItem.PRICE to obj(
                                 StatItem.PRICE_LOW  to priceLow,
                                 StatItem.PRICE_HIGH  to priceHigh,

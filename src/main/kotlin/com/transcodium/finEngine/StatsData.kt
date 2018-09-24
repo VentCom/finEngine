@@ -140,7 +140,10 @@ class StatsData {
                                         .append("_id", Document("date",groupDate)
                                         .append("symbol","\$s"))
                                         .append("price",Document("\$first","\$p"))
+                                        .append("market",Document("\$first","\$m"))
             )
+
+
 
             //not aggregates must be in order else you
             // will get undesirable results
@@ -149,6 +152,7 @@ class StatsData {
                     preSort,
                     groupCmd,
                     postSort
+
             )
 
 

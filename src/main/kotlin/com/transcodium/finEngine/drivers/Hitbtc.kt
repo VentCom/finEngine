@@ -12,62 +12,26 @@ import io.vertx.ext.web.client.WebClientOptions
 import io.vertx.kotlin.core.json.json
 import io.vertx.kotlin.core.json.obj
 import io.vertx.kotlin.coroutines.CoroutineVerticle
+import org.bson.Document
 
-class Hitbtc: CoroutineVerticle() {
-
-    val logger by lazy {
-        LoggerFactory.getLogger(this::class.java)
-    }
-
-
-    val driverName = "hitbtc"
-    lateinit var driverConfig : JsonObject
-
-    lateinit var driverId: String
-
-    val webClient by lazy{
-
-        val webclientOpts = WebClientOptions()
-                .setFollowRedirects(true)
-                .setTrustAll(true)
-
-        WebClient.create(vertx,webclientOpts)
-    }
+class Hitbtc: DriverBase() {
 
     override suspend fun start() {
         super.start()
-
-        driverConfig = config.getJsonObject(driverName)
-
-        //lets get config
-        val driverInfoStatus = Market.getInfo(driverName,true)
-
-        if(driverInfoStatus.isError()){
-            logger.fatalExit(driverInfoStatus.getMessage())
-        }
-
-        println(driverInfoStatus.data())
-
-        val driverInfo = driverInfoStatus.data() as JsonObject
-
-        driverId = driverInfo.getString("_id")
-
-
         fetchTickerData()
-    }//end fun
-
+    }
 
     fun fetchTickerData(){
 
         //lets get endpoin
-        val endpoint =  driverConfig.getString("data_endpoint","")
+        val endpoint =  driverConfig!!.getString("data_endpoint","")
 
         if(endpoint.isEmpty()){
             logger.fatal("Hitbtc Data endpoint is required in /config/drivers/hitbtc.conf")
             return
         }
 
-        val delay = (driverConfig.getInteger("delay",30) * 1000).toLong()
+        val delay = (driverConfig!!.getInteger("delay",30) * 1000).toLong()
 
 
         val httpRequest = webClient.getAbs(endpoint)
@@ -100,42 +64,87 @@ class Hitbtc: CoroutineVerticle() {
         val processedData = JsonArray()
 
 
-        dataArray.forEach { dataObj ->
+        for(dataObj in dataArray) {
 
             dataObj as JsonObject
 
+            if(dataObj.isEmpty){
+                continue
+            }
+
             val eventTime = System.currentTimeMillis()
 
-            val market = dataObj.getString("symbol").subSequence(dataObj.getString("symbol").length, -3)
-
             val pair =    dataObj.getString("symbol").toLowerCase()
-                    .replace(""+market,"."+market)
+
+            var firstAsset: String
+            var secondAsset: String
 
 
-            val priceHigh = dataObj.getDouble("high",0.0)
+           if(pair.matches(".*(btc|eth|eos|usd|dai)$".toRegex())){
+                secondAsset = pair.substring(pair.length - 3,pair.length)
+                firstAsset = pair.substring(0,(pair.length - secondAsset.length))
+            }
 
-            val priceLow = dataObj.getDouble("low",0.0)
+            else if(pair.length == 6 || pair.matches("^(btc|eth|eos|dai).+".toRegex())){
 
-            val priceClose =  dataObj.getDouble("last",0.0)
+               firstAsset = pair.substring(0, 3)
+               secondAsset = pair.substring(3, pair.length)
 
-            val volume =  dataObj.getDouble("volume",0.0)
+           }
+
+            else if( pair.matches(".+(usdt|eurs|tusd)$".toRegex())){
+
+               secondAsset = pair.substring(pair.length - 4,pair.length)
+               firstAsset = pair.substring(0,(pair.length - secondAsset.length))
+
+            }else {
+
+               firstAsset = pair.substring(0,4)
+               secondAsset = pair.substring(4,pair.length)
+
+           }
+
+            val symbol = "$firstAsset.$secondAsset"
+
+            //println(symbol)
+
+            val priceHigh = dataObj.getString("high","0.0").toDoubleOrNull()
+
+            val priceLow = dataObj.getString("low","0.0").toDoubleOrNull()
+
+            val priceOpen = dataObj.getString("open","0.0")?.toDoubleOrNull() ?: 0.0
+
+            val priceClose =  dataObj.getString("last","0.0").toDoubleOrNull()
+
+            val volume =  dataObj.getString("volume","0.0").toDoubleOrNull()
+
+            val volumeQoute = dataObj.getString("volumeQuote","0.0").toDoubleOrNull()
+
 
 
             processedData.add(json{
                 obj(
                         StatItem.TIME  to eventTime,
-                        StatItem.PAIR to pair,
-                        StatItem.MARKET_ID to driverId,
+                        StatItem.PAIR to symbol,
+                        StatItem.MARKET_ID to driverName.toLowerCase(),
                         StatItem.PRICE to obj(
+
+                                //StatItem.PRICE_CHANGE to priceChange,
+                                // StatItem.PRICE_CHANGE_PERCENT to priceChangePercent,
                                 StatItem.PRICE_LOW  to priceLow,
                                 StatItem.PRICE_HIGH  to priceHigh,
+                                StatItem.PRICE_OPEN  to priceOpen,
                                 StatItem.PRICE_CLOSE to priceClose
                         ),
 
-                        StatItem.VOLUME       to volume
+                        StatItem.VOLUME       to volume,
+                        StatItem.VOLUME_QUOTE to volumeQoute
                 )
             })
+
         }//end loop
+
+       // println(processedData)
 
         DataPiper.save(processedData)
 
